@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard: IA & Transformação Digital</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --bg-card: #1a1d27;
+      --bg-card-hover: #22263a;
+      --border: #2a2d3e;
+      --accent-pt: #0d6efd;
+      --accent-eu: #0099cc;
+      --accent-us: #cc3333;
+      --accent-cn: #e84d4d;
+      --text-primary: #e8eaf0;
+      --text-secondary: #8b90a4;
+      --text-muted: #5a5f7a;
+      --tag-bg: #252840;
+      --tag-text: #7b8cde;
+      --link: #6fa3ef;
+      --link-hover: #9fc0f8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #12152a 0%, #1a1d35 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1rem 1.5rem;
+      text-align: center;
+    }
+    header .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    header .logo-icon {
+      font-size: 2rem;
+    }
+    header h1 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #7b8cde, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+    header .update-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.25rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+    header .update-time span.dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.4; }
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+    }
+
+    /* ── Region section ── */
+    .region {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .region-header {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .region-header .flag {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+    .region-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+    .region-header .pill {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .pt .region-header { border-color: var(--accent-pt); }
+    .pt .pill           { background: var(--accent-pt); }
+    .eu .region-header  { border-color: var(--accent-eu); }
+    .eu .pill           { background: var(--accent-eu); }
+    .us .region-header  { border-color: var(--accent-us); }
+    .us .pill           { background: var(--accent-us); }
+    .cn .region-header  { border-color: var(--accent-cn); }
+    .cn .pill           { background: var(--accent-cn); }
+
+    /* ── News card ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: #3a3f5a;
+      transform: translateY(-2px);
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .card-source {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card-date {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .card h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .card h3 a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .card h3 a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+    .card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      border-top: 1px solid var(--border);
+    }
+    footer span {
+      color: var(--tag-text);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <span class="logo-icon">🤖</span>
+    <h1>Dashboard: IA &amp; Transformação Digital</h1>
+  </div>
+  <p class="subtitle">Agregador automático de notícias por região</p>
+  <div class="update-time">
+    <span class="dot"></span>
+    Atualizado em 02 de outubro de 2026, 07:17 UTC
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <!-- ── PORTUGAL ── -->
+    <section class="region pt">
+      <div class="region-header">
+        <span class="flag">🇵🇹</span>
+        <h2>Portugal</h2>
+        <span class="pill">3 notícias</span>
+      </div>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">Jornal Económico / Grande Consumo</span>
+          <span class="card-date">Out 2026</span>
+        </div>
+        <h3><a href="https://jornaleconomico.sapo.pt/noticias/portugal-digital-summit-2026-junta-mais-de-150-especialistas-para-debater-era-dos-agentes-de-ia/" target="_blank" rel="noopener">Portugal Digital Summit 2026 reúne 150 especialistas para debater a Era dos Agentes de IA</a></h3>
+        <p>O maior evento nacional de economia digital realiza-se a 21 e 22 de outubro no Centro de Congressos de Lisboa, sob o tema "A Era dos Agentes de IA: o novo motor da economia digital". O evento da ACEPI contará com 14 palcos temáticos e uma área de exposição dedicada a soluções tecnológicas.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">TI Inside / tiinside.com.br</span>
+          <span class="card-date">30 Set 2026</span>
+        </div>
+        <h3><a href="https://tiinside.com.br/30/09/2026/atlantic-convergence-2026-reune-lideres-globais-em-lisboa-para-debater-o-futuro-das-infraestruturas-digitais/" target="_blank" rel="noopener">Atlantic Convergence 2026 reúne líderes globais em Lisboa para debater o futuro das infraestruturas digitais</a></h3>
+        <p>Lisboa acolheu esta semana líderes internacionais para debater o crescimento da procura de capacidade de processamento e conectividade impulsionada pela IA, reforçando o posicionamento de Portugal como hub digital europeu e internacional.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">Digital.gov.pt</span>
+          <span class="card-date">Jul 2026</span>
+        </div>
+        <h3><a href="https://digital.gov.pt/pt/inteligencia-artificial" target="_blank" rel="noopener">Portugal lança portal IA.gov.pt para a Administração Pública</a></h3>
+        <p>O portal IA.gov.pt, dedicado à inteligência artificial na Administração Pública portuguesa, foi lançado em julho de 2026, no âmbito da Agenda Nacional para a IA aprovada pelo governo. A iniciativa integra a Estratégia Nacional Digital com objetivo de posicionar Portugal entre os países europeus líderes em transformação digital até 2030.</p>
+      </article>
+    </section>
+
+    <!-- ── EUROPE ── -->
+    <section class="region eu">
+      <div class="region-header">
+        <span class="flag">🇪🇺</span>
+        <h2>Europa</h2>
+        <span class="pill">3 notícias</span>
+      </div>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">Taylor Wessing / beam.ai</span>
+          <span class="card-date">2 Ago 2026</span>
+        </div>
+        <h3><a href="https://www.taylorwessing.com/en/insights-and-events/insights/2026/08/gpai-obligations-under-the-eu-ai-act" target="_blank" rel="noopener">AI Act da UE: fiscalização dos modelos GPAI em vigor desde 2 de agosto de 2026</a></h3>
+        <p>A Comissão Europeia e o AI Office passaram a poder investigar, multar e até retirar do mercado modelos de IA de uso geral (GPAI) que incumpram o Regulamento IA. As coimas podem atingir 3% do volume de negócios global ou 15 milhões de euros, o que for mais elevado.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">LegalNodes / regulation-ai.eu</span>
+          <span class="card-date">27 Jul 2026</span>
+        </div>
+        <h3><a href="https://www.legalnodes.com/article/eu-ai-act-2026-updates-compliance-requirements-and-business-risks" target="_blank" rel="noopener">AI Omnibus entra em vigor: simplificação das obrigações para PME e sistemas de baixo risco</a></h3>
+        <p>As emendas ao AI Act aprovadas em junho de 2026, apelidadas de "AI Omnibus", entraram em vigor a 27 de julho, aliviando exigências burocráticas para pequenas e médias empresas e clarificando as obrigações de transparência para sistemas de IA de risco limitado.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">GDPR Local / Cubbbix</span>
+          <span class="card-date">Out 2026</span>
+        </div>
+        <h3><a href="https://cubbbix.com/blog/ai-regulation-october-2026-global-update" target="_blank" rel="noopener">Regulação da IA em outubro 2026: Europa define padrão global enquanto EUA travam batalha de pré-emption</a></h3>
+        <p>Outubro de 2026 marca um ponto de inflexão na governação da IA a nível internacional. Enquanto a Europa aplica o AI Act com penalidades de até €35 M ou 7% da faturação global, os EUA debatem se a legislação federal deve sobrepor-se às leis estaduais, como a californiana "No Robo Bosses Act".</p>
+      </article>
+    </section>
+
+    <!-- ── USA ── -->
+    <section class="region us">
+      <div class="region-header">
+        <span class="flag">🇺🇸</span>
+        <h2>EUA</h2>
+        <span class="pill">4 notícias</span>
+      </div>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">CNBC</span>
+          <span class="card-date">30 Set 2026</span>
+        </div>
+        <h3><a href="https://www.cnbc.com/2026/09/30/california-gavin-newsom-ai-ban.html" target="_blank" rel="noopener">Califórnia proíbe "chefes robóticos": Newsom assina lei que impede despedimentos decididos exclusivamente por IA</a></h3>
+        <p>O governador Gavin Newsom assinou a "No Robo Bosses Act" (SB 947), tornando a Califórnia no primeiro estado norte-americano a proibir que sistemas de IA sejam o único responsável por despedir ou disciplinar trabalhadores. A lei entra em vigor a 1 de julho de 2027.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">The Hans India / LLM Stats</span>
+          <span class="card-date">Out 2026</span>
+        </div>
+        <h3><a href="https://www.thehansindia.com/tech/upcoming-ai-updates-in-october-2026-major-developments-to-watch-1127036" target="_blank" rel="noopener">OpenAI lança "Dots": agente autónomo para Slack e Microsoft Teams</a></h3>
+        <p>A OpenAI apresentou o produto "Dots", um agente de IA autónomo que pode ser implementado em plataformas de mensagens como Slack e Microsoft Teams para automatizar tarefas de trabalho. Em paralelo, a Anthropic lançou o Claude Opus 5.5 e o Google DeepMind avança com o Gemini 4 em fase de pós-treino.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">Fox News / AI leaders summit</span>
+          <span class="card-date">Out 2026</span>
+        </div>
+        <h3><a href="https://www.foxnews.com/live-news/ai-leaders-trump-meeting-google-executive-order" target="_blank" rel="noopener">Trump renomeia IA para "Super Intelligence" e lidera acordo de segurança com líderes tecnológicos</a></h3>
+        <p>O Presidente Donald Trump reuniu-se com os principais líderes da indústria de IA dos EUA para assinar um acordo de segurança conjunto e anunciou a renomeação oficial da inteligência artificial para "Super Intelligence" em documentos governamentais, sinalizando uma nova fase de política nacional para o setor.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">Wikipedia / 2026 in tech</span>
+          <span class="card-date">Set/Out 2026</span>
+        </div>
+        <h3><a href="https://en.wikipedia.org/wiki/2026_in_technology_and_computing" target="_blank" rel="noopener">Apple prepara hub doméstico com Siri IA para outubro de 2026</a></h3>
+        <p>A Apple planeia lançar um novo produto de casa inteligente com Siri IA, internamente denominado J490, com ecrã de seis polegadas, semelhante ao Amazon Echo e Google Home. A AWS também disponibilizou os modelos GPT-6 Sol e GPT-6 Luna da OpenAI via Amazon Bedrock.</p>
+      </article>
+    </section>
+
+    <!-- ── CHINA ── -->
+    <section class="region cn">
+      <div class="region-header">
+        <span class="flag">🇨🇳</span>
+        <h2>China</h2>
+        <span class="pill">3 notícias</span>
+      </div>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">CNBC</span>
+          <span class="card-date">26 Set 2026</span>
+        </div>
+        <h3><a href="https://www.cnbc.com/2026/09/26/china-ai-global-adoption.html" target="_blank" rel="noopener">Modelos de IA chineses em ascensão global: DeepSeek ultrapassa 25% dos pedidos na plataforma OpenRouter</a></h3>
+        <p>Os modelos de IA chineses — DeepSeek, Z.ai, Alibaba e Moonshot — registaram um crescimento acelerado na adoção global, com o DeepSeek a atingir 25,4% dos pedidos de texto na OpenRouter na semana de 14 de setembro. Washington intensifica a vigilância sobre a adoção de IA chinesa por questões de segurança nacional.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">Fortune / CNBC</span>
+          <span class="card-date">Abr–Jul 2026</span>
+        </div>
+        <h3><a href="https://fortune.com/2026/07/26/china-moonshot-deepseek-zai-kimi-challenging-us-ai-cost/" target="_blank" rel="noopener">Moonshot, Z.AI e DeepSeek desafiam laboratórios de IA norte-americanos com preços muito mais baixos</a></h3>
+        <p>As principais startups de IA chinesas estão a conquistar mercado global ao oferecer modelos de alta performance a custos significativamente inferiores aos dos concorrentes americanos. O DeepSeek V4 foi apresentado em abril de 2026 com melhorias substanciais em programação e tarefas agênticas complexas.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-meta">
+          <span class="card-source">SSGA / TrendForce</span>
+          <span class="card-date">2026</span>
+        </div>
+        <h3><a href="https://www.ssga.com/us/en/intermediary/insights/beyond-deepseek-chinas-2026-model-wave-and-the-repricing-of-the-ai-stack" target="_blank" rel="noopener">China redefine o mercado global de IA: "onda de modelos 2026" pressiona preços e estratégia ocidental</a></h3>
+        <p>O relatório "Beyond DeepSeek" da State Street Global Advisors analisa como a vaga de novos modelos chineses em 2026 está a alterar a estrutura de preços do setor de IA a nível mundial. Os modelos open-source chineses já detêm cerca de 15% da quota global, impulsionando uma reavaliação estratégica nas empresas ocidentais.</p>
+      </article>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <p>🤖 <span>Atualizado automaticamente por Claude</span> &nbsp;·&nbsp; Dashboard: IA &amp; Transformação Digital &nbsp;·&nbsp; 02 Out 2026</p>
+</footer>
+
+</body>
+</html>
