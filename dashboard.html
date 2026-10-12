@@ -1,211 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard: IA & Transformação Digital</title>
   <style>
     :root {
       --bg: #0f1117;
       --surface: #1a1d27;
-      --surface2: #22263a;
+      --card: #22263a;
+      --card-hover: #272b40;
       --border: #2e3350;
-      --accent: #5b8dee;
-      --accent2: #7c5cbf;
-      --text: #e2e6f0;
-      --muted: #8892aa;
-      --tag: #1e2840;
-      --tag-text: #7ea8f8;
-      --card-hover: #1f2338;
-      --radius: 12px;
-      --shadow: 0 2px 16px rgba(0,0,0,0.4);
+      --accent: #5b7fff;
+      --accent2: #7c5bff;
+      --text: #e4e6f0;
+      --muted: #8a90a8;
+      --green: #3dd68c;
+      --amber: #f5a623;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
       min-height: 100vh;
-      padding: 0 0 40px;
+      line-height: 1.5;
     }
 
     header {
-      background: linear-gradient(135deg, #0d1220 0%, #121829 60%, #15192e 100%);
+      background: linear-gradient(135deg, #0f1117 0%, #1a1d27 50%, #151824 100%);
       border-bottom: 1px solid var(--border);
-      padding: 32px 16px 24px;
+      padding: 2rem 1rem 1.5rem;
       text-align: center;
     }
 
     header h1 {
-      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
       font-weight: 700;
-      letter-spacing: -0.5px;
-      background: linear-gradient(90deg, #7ea8f8, #c084fc);
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 8px;
+      margin-bottom: 0.4rem;
     }
 
-    .header-meta {
+    header .subtitle {
       color: var(--muted);
       font-size: 0.85rem;
     }
 
-    .header-meta span {
+    .badge {
       display: inline-block;
-      background: var(--tag);
-      color: var(--tag-text);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 3px 12px;
-      margin-top: 6px;
-      font-size: 0.8rem;
+      color: var(--green);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      margin-top: 0.6rem;
     }
 
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 16px 0;
-    }
-
-    .regions-grid {
+      padding: 2rem 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
 
-    @media (max-width: 560px) {
-      .regions-grid { grid-template-columns: 1fr; }
-    }
-
-    .region {
+    section {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: var(--shadow);
     }
 
-    .region-header {
-      padding: 16px 20px;
+    .section-header {
+      padding: 1rem 1.25rem 0.75rem;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: var(--surface2);
+      gap: 0.6rem;
     }
 
-    .region-header .flag {
-      font-size: 1.5rem;
-      line-height: 1;
-    }
+    .section-header .flag { font-size: 1.5rem; line-height: 1; }
 
-    .region-header h2 {
+    .section-header h2 {
       font-size: 1rem;
       font-weight: 600;
-      letter-spacing: 0.4px;
       color: var(--text);
     }
 
-    .region-header .count {
+    .section-header .count {
       margin-left: auto;
-      background: var(--tag);
-      color: var(--tag-text);
-      border-radius: 20px;
-      padding: 2px 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.7rem;
+      color: var(--muted);
+      background: var(--card);
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
       border: 1px solid var(--border);
     }
 
-    .news-list {
-      padding: 4px 0;
-    }
+    .news-list { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem; }
 
     .news-card {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-
-    .news-card:last-child { border-bottom: none; }
-
-    .news-card:hover { background: var(--card-hover); }
-
-    .news-card a.title {
-      display: block;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      margin-bottom: 6px;
-      line-height: 1.4;
-    }
-
-    .news-card a.title:hover {
-      color: var(--accent);
-    }
-
-    .news-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .source-badge {
-      background: var(--tag);
-      color: var(--tag-text);
+      background: var(--card);
       border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .news-card:hover {
+      background: var(--card-hover);
+      border-color: var(--accent);
+    }
+
+    .news-card a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      line-height: 1.35;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .news-card a:hover { color: var(--accent); }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .source-tag {
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(91,127,255,0.1);
+      border: 1px solid rgba(91,127,255,0.25);
+      padding: 0.1rem 0.45rem;
       border-radius: 4px;
-      padding: 1px 8px;
-      font-size: 0.75rem;
       font-weight: 500;
     }
 
-    .date-badge {
+    .date-tag {
+      font-size: 0.7rem;
       color: var(--muted);
-      font-size: 0.75rem;
     }
 
     .summary {
+      font-size: 0.8rem;
       color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.55;
+      line-height: 1.45;
     }
 
     footer {
       text-align: center;
-      margin-top: 40px;
-      padding: 20px 16px;
-      border-top: 1px solid var(--border);
+      padding: 1.5rem 1rem 2rem;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
+      border-top: 1px solid var(--border);
     }
 
-    footer span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
+    footer span { color: var(--accent); }
 
-    footer .dot {
-      width: 6px; height: 6px;
-      background: #22c55e;
-      border-radius: 50%;
-      display: inline-block;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+    @media (max-width: 600px) {
+      main { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -213,233 +180,201 @@
 
 <header>
   <h1>Dashboard: IA &amp; Transformação Digital</h1>
-  <div class="header-meta">
-    Últimas notícias sobre Inteligência Artificial e Transformação Digital por região
-    <br />
-    <span id="update-time">A carregar...</span>
-  </div>
+  <p class="subtitle">Notícias agregadas por região &mdash; Atualizado em 12 de outubro de 2026</p>
+  <div class="badge">&#x25CF; Atualizado automaticamente</div>
 </header>
 
 <main>
-  <div class="regions-grid">
 
-    <!-- PORTUGAL -->
-    <section class="region">
-      <div class="region-header">
-        <span class="flag">🇵🇹</span>
-        <h2>Portugal</h2>
-        <span class="count">4 artigos</span>
+  <!-- PORTUGAL -->
+  <section>
+    <div class="section-header">
+      <span class="flag">🇵🇹</span>
+      <h2>Portugal</h2>
+      <span class="count">3 artigos</span>
+    </div>
+    <div class="news-list">
+
+      <div class="news-card">
+        <a href="https://jornaleconomico.sapo.pt/noticias/portugal-digital-summit-2026-junta-mais-de-150-especialistas-para-debater-era-dos-agentes-de-ia/" target="_blank" rel="noopener">Portugal Digital Summit 2026 reúne mais de 150 especialistas para debater era dos agentes de IA</a>
+        <div class="meta">
+          <span class="source-tag">Jornal Económico</span>
+          <span class="date-tag">6 out 2026</span>
+        </div>
+        <p class="summary">O Portugal Digital Summit, organizado pela ACEPI, decorre a 21 e 22 de outubro em Lisboa sob o tema "A Era dos Agentes de IA – o novo motor da economia digital", com mais de 150 oradores nacionais e internacionais.</p>
       </div>
-      <div class="news-list">
 
-        <div class="news-card">
-          <a class="title" href="https://jornaleconomico.sapo.pt/noticias/portugal-digital-summit-2026-junta-mais-de-150-especialistas-para-debater-era-dos-agentes-de-ia/" target="_blank" rel="noopener">Portugal Digital Summit 2026 reúne mais de 150 especialistas para debater a era dos agentes de IA</a>
-          <div class="news-meta">
-            <span class="source-badge">Jornal Económico</span>
-            <span class="date-badge">9 Out 2026</span>
-          </div>
-          <p class="summary">O Portugal Digital Summit realiza-se a 21 e 22 de outubro no Centro de Congressos de Lisboa, organizado pela ACEPI com a GoingNext. Com mais de 150 oradores, o evento centra-se na era dos agentes de IA e explora como escalar projetos-piloto para resultados de negócio reais.</p>
+      <div class="news-card">
+        <a href="https://digitalinside.pt/portugal-digital-summit-poe-os-agentes-de-ia-no-centro-do-negocio/" target="_blank" rel="noopener">Portugal Digital Summit põe os agentes de IA no centro do negócio</a>
+        <div class="meta">
+          <span class="source-tag">Digital Inside</span>
+          <span class="date-tag">6 out 2026</span>
         </div>
-
-        <div class="news-card">
-          <a class="title" href="https://lidermagazine.sapo.pt/da-nuvem-soberana-a-gigafabrica-portugal-prepara-se-para-competir-na-era-da-ia/" target="_blank" rel="noopener">Da nuvem soberana à gigafábrica: Portugal prepara-se para competir na era da IA</a>
-          <div class="news-meta">
-            <span class="source-badge">Líder Magazine</span>
-            <span class="date-badge">9 Out 2026</span>
-          </div>
-          <p class="summary">O ministro Gonçalo Saraiva Matias delineou a estratégia nacional de IA, apostando numa nuvem soberana e numa gigafábrica de dados. Segundo o governante, Portugal ultrapassou a fase dos projetos-piloto e está agora a competir ativamente na corrida global à inteligência artificial.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://tek.sapo.pt/extras/site-do-dia/artigos/projetos-de-transformacao-digital-sobem-a-palco-no-evolve-2026/" target="_blank" rel="noopener">Projetos de transformação digital sobem a palco no EVOLVE 2026 em Porto</a>
-          <div class="news-meta">
-            <span class="source-badge">TEK / SAPO</span>
-            <span class="date-badge">7 Out 2026</span>
-          </div>
-          <p class="summary">O evento EVOLVE 2026 da APDC decorreu no Porto com destaque para casos reais de transformação digital portuguesa, incluindo agentes de IA industrial e redes 5G privadas para fábricas. O encontro sublinhou a aceleração da adoção de IA no tecido empresarial nacional.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://creativenews.pt/2026/10/06/portugal-digital-summit-2026-traz-a-debate-o-impacto-da-inteligencia-artificial-na-sociedade-e-no-talento/" target="_blank" rel="noopener">Portugal Digital Summit 2026 traz a debate o impacto da IA na sociedade e no talento</a>
-          <div class="news-meta">
-            <span class="source-badge">Creative News</span>
-            <span class="date-badge">6 Out 2026</span>
-          </div>
-          <p class="summary">O Portugal Digital Summit 2026 incluirá sessões dedicadas ao impacto social da IA e à gestão do talento, com Arlindo Oliveira (IST/INESC) entre os oradores de abertura. O programa aborda ainda competências, liderança, dados e cibersegurança numa era em que as obrigações do Regulamento Europeu de IA já estão em vigor.</p>
-        </div>
-
+        <p class="summary">O evento debate como passar de projetos-piloto de IA para soluções com impacto real nas empresas, abordando ainda a ligação entre inteligência artificial, talento e novos modelos de trabalho.</p>
       </div>
-    </section>
 
-    <!-- EUROPE -->
-    <section class="region">
-      <div class="region-header">
-        <span class="flag">🇪🇺</span>
-        <h2>Europa</h2>
-        <span class="count">4 artigos</span>
+      <div class="news-card">
+        <a href="https://creativenews.pt/2026/10/06/portugal-digital-summit-2026-traz-a-debate-o-impacto-da-inteligencia-artificial-na-sociedade-e-no-talento/" target="_blank" rel="noopener">Portugal Digital Summit 2026 traz a debate o impacto da IA na sociedade e no talento</a>
+        <div class="meta">
+          <span class="source-tag">Creative News</span>
+          <span class="date-tag">6 out 2026</span>
+        </div>
+        <p class="summary">Com painel de abertura de Arlindo Oliveira (IST/INESC), o summit enquadra o debate com as novas obrigações do Regulamento Europeu de IA, em vigor desde agosto de 2026.</p>
       </div>
-      <div class="news-list">
 
-        <div class="news-card">
-          <a class="title" href="https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/" target="_blank" rel="noopener">OpenAI vai adicionar marca de água invisível aos textos do ChatGPT na União Europeia</a>
-          <div class="news-meta">
-            <span class="source-badge">TechCrunch</span>
-            <span class="date-badge">5 Out 2026</span>
-          </div>
-          <p class="summary">Em resposta às regras de transparência do AI Act que entraram em vigor em agosto, a OpenAI anunciou que irá aplicar uma marca de água invisível a todos os textos gerados pelo ChatGPT e pelo Codex na UE. A medida visa cumprir os requisitos de identificação de conteúdo gerado por IA estabelecidos pela legislação europeia.</p>
+    </div>
+  </section>
+
+  <!-- EUROPA -->
+  <section>
+    <div class="section-header">
+      <span class="flag">🇪🇺</span>
+      <h2>Europa</h2>
+      <span class="count">4 artigos</span>
+    </div>
+    <div class="news-list">
+
+      <div class="news-card">
+        <a href="https://techcrunch.com/2026/10/05/openai-will-start-watermarking-chatgpts-text-in-the-eu/" target="_blank" rel="noopener">OpenAI vai adicionar marca d'água ao texto do ChatGPT na União Europeia</a>
+        <div class="meta">
+          <span class="source-tag">TechCrunch</span>
+          <span class="date-tag">5 out 2026</span>
         </div>
-
-        <div class="news-card">
-          <a class="title" href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/" target="_blank" rel="noopener">EU AI Act Omnibus: prazos para sistemas de alto risco adiados para 2027-2028</a>
-          <div class="news-meta">
-            <span class="source-badge">Gibson Dunn</span>
-            <span class="date-badge">Out 2026</span>
-          </div>
-          <p class="summary">O Regulamento (UE) 2026/1744 — o "Digital Omnibus" sobre IA — publicado em julho, adiou as obrigações para sistemas de IA de alto risco: a maioria passa para dezembro de 2027, com algumas para agosto de 2028. As regras de transparência já estão em vigor, e a proibição de apps "nudificadoras" entra em vigor a 2 de dezembro de 2026.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://www.actuia.com/en/news/ai-ethics-and-regulation-the-state-of-play-on-6-october-2026/" target="_blank" rel="noopener">Comissão Europeia realiza reunião especial do painel científico sobre segurança de IA de fronteira</a>
-          <div class="news-meta">
-            <span class="source-badge">ActuIA</span>
-            <span class="date-badge">6 Out 2026</span>
-          </div>
-          <p class="summary">A Comissão Europeia convocou uma reunião especial do Painel Científico de IA focada nos riscos dos modelos de IA de fronteira (frontier AI). O encontro, realizado a 5 de outubro, integra a supervisão contínua prevista no AI Act para os sistemas de IA de uso geral com maior potencial de impacto sistémico.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://cubbbix.com/blog/ai-regulation-october-2026-global-update" target="_blank" rel="noopener">AI Act em outubro de 2026: o que já vigora, o que foi adiado e o debate sobre direitos de autor</a>
-          <div class="news-meta">
-            <span class="source-badge">Cubbbix / LW</span>
-            <span class="date-badge">Out 2026</span>
-          </div>
-          <p class="summary">Em setembro, a Comissão abriu consulta pública sobre o impacto da IA nos direitos de autor, abrindo caminho a uma possível revisão legislativa. Enquanto isso, os Estados-Membros debatem a implementação do AI Act Omnibus e como equilibrar inovação e proteção em sectores como saúde, transporte e infraestruturas críticas.</p>
-        </div>
-
+        <p class="summary">Em resposta às regras de transparência do AI Act em vigor desde 2 de agosto, a OpenAI anunciou que passará a incluir marcas d'água invisíveis nos textos gerados pelo ChatGPT e Codex na UE.</p>
       </div>
-    </section>
 
-    <!-- USA -->
-    <section class="region">
-      <div class="region-header">
-        <span class="flag">🇺🇸</span>
-        <h2>Estados Unidos</h2>
-        <span class="count">5 artigos</span>
+      <div class="news-card">
+        <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/" target="_blank" rel="noopener">EU AI Act Omnibus: prazos adiados e novas proibições aprovadas</a>
+        <div class="meta">
+          <span class="source-tag">Gibson Dunn</span>
+          <span class="date-tag">27 jul 2026</span>
+        </div>
+        <p class="summary">O Regulamento Digital Omnibus (Reg. 2026/1744) entrou em vigor a 27 de julho, adiando alguns prazos de alto risco para dezembro de 2027 e agosto de 2028, e alargando proibições a aplicações de "nudificação" com coimas até 7% do volume de negócios global.</p>
       </div>
-      <div class="news-list">
 
-        <div class="news-card">
-          <a class="title" href="https://techstartups.com/2026/10/09/top-ai-news-stories-this-week-october-5-9-2026/" target="_blank" rel="noopener">Meta e Sierra lançam padrão aberto para agentes de IA pessoais com parceiros como Shopify e Walmart</a>
-          <div class="news-meta">
-            <span class="source-badge">Tech Startups</span>
-            <span class="date-badge">9 Out 2026</span>
-          </div>
-          <p class="summary">A Meta, a Sierra e outros grandes players anunciaram um padrão aberto de interoperabilidade para agentes de IA pessoais, contando com parceiros como Shopify, Stripe e Walmart. A iniciativa pretende criar um ecossistema unificado em que assistentes de IA possam agir em nome dos utilizadores em múltiplas plataformas.</p>
+      <div class="news-card">
+        <a href="https://www.actuia.com/en/news/ai-ethics-and-regulation-the-state-of-play-on-6-october-2026/" target="_blank" rel="noopener">IA e ética na Europa: ponto de situação a 6 de outubro de 2026</a>
+        <div class="meta">
+          <span class="source-tag">ActuIA</span>
+          <span class="date-tag">6 out 2026</span>
         </div>
-
-        <div class="news-card">
-          <a class="title" href="https://shadowaipolicy.com/blog/ai-policy-news-october-1-2026" target="_blank" rel="noopener">Califórnia aprova lei histórica que proíbe decisões de emprego baseadas exclusivamente em algoritmos</a>
-          <div class="news-meta">
-            <span class="source-badge">Shadow AI Policy</span>
-            <span class="date-badge">30 Set 2026</span>
-          </div>
-          <p class="summary">O governador Newsom assinou legislação que impede as empresas de usar apenas sistemas algorítmicos para tomar decisões de contratação, promoção ou despedimento. A lei entra em vigor imediatamente e representa um dos avanços regulatórios mais significativos a nível estadual nos EUA em matéria de IA no trabalho.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://shadowaipolicy.com/blog/ai-policy-news-october-1-2026" target="_blank" rel="noopener">Casa Branca assina acordo voluntário de salvaguardas de IA com os maiores fornecedores tecnológicos</a>
-          <div class="news-meta">
-            <span class="source-badge">Shadow AI Policy</span>
-            <span class="date-badge">29 Set 2026</span>
-          </div>
-          <p class="summary">A administração Trump formalizou um acordo voluntário de segurança de IA com os principais fornecedores tecnológicos dos EUA. Especialistas do setor defendem que o acordo, apesar de não ser juridicamente vinculativo, é na prática executável, estabelecendo compromissos públicos que as empresas terão dificuldade em ignorar.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://www.nextgov.com/artificial-intelligence/2026/10/tech-bills-week-ai-research-competitions-prohibiting-federal-use-biometric-tech-and-more/416405/" target="_blank" rel="noopener">Congresso debate novas leis de IA: competições de investigação e proibição de vigilância biométrica federal</a>
-          <div class="news-meta">
-            <span class="source-badge">Nextgov/FCW</span>
-            <span class="date-badge">7 Out 2026</span>
-          </div>
-          <p class="summary">Vários projetos de lei bipartidários estão a avançar no Congresso, incluindo o Reliable Artificial Intelligence Research Act, que cria competições de IA geridas pelo DHS focadas em interpretabilidade e robustez adversarial. Em paralelo, Sanders, Merkley e Ocasio-Cortez propõem proibir as agências federais de usar tecnologia de vigilância biométrica baseada em IA.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://techstartups.com/2026/10/09/top-ai-news-stories-this-week-october-5-9-2026/" target="_blank" rel="noopener">Morgan Stanley: infraestrutura de IA precisará de 1,5 biliões de dólares em financiamento externo até 2028</a>
-          <div class="news-meta">
-            <span class="source-badge">Tech Startups / Morgan Stanley</span>
-            <span class="date-badge">9 Out 2026</span>
-          </div>
-          <p class="summary">Segundo a Morgan Stanley, a expansão da infraestrutura de IA nos EUA poderá exigir cerca de 1,5 biliões de dólares em financiamento externo até 2028, com SpaceX, Broadcom e Oracle já a recorrer a dívida pesada. O volume de investimento sublinha a dimensão da corrida para construir capacidade de computação à escala dos modelos de próxima geração.</p>
-        </div>
-
+        <p class="summary">Análise ao estado da regulação de IA na Europa, incluindo a reunião especial do Painel Científico da Comissão sobre segurança de IA de fronteira realizada a 5 de outubro e a consulta pública sobre direitos de autor e tecnologia lançada a 29 de setembro.</p>
       </div>
-    </section>
 
-    <!-- CHINA -->
-    <section class="region">
-      <div class="region-header">
-        <span class="flag">🇨🇳</span>
-        <h2>China</h2>
-        <span class="count">4 artigos</span>
+      <div class="news-card">
+        <a href="https://www.aljazeera.com/news/2026/8/6/what-came-into-force-with-the-eus-ai-act-this-week-and-what-didnt" target="_blank" rel="noopener">O que entrou em vigor com o AI Act da UE em agosto — e o que ficou para depois</a>
+        <div class="meta">
+          <span class="source-tag">Al Jazeera</span>
+          <span class="date-tag">6 ago 2026</span>
+        </div>
+        <p class="summary">Análise detalhada das obrigações de transparência e marcação de conteúdo gerado por IA que passaram a aplicar-se a partir de 2 de agosto, enquanto outros requisitos de alto risco aguardam ainda prazos alargados pela reforma Omnibus.</p>
       </div>
-      <div class="news-list">
 
-        <div class="news-card">
-          <a class="title" href="https://www.cnbc.com/2026/09/26/china-ai-global-adoption.html" target="_blank" rel="noopener">Modelos de IA chineses como DeepSeek, Qwen e Kimi disparam em popularidade global</a>
-          <div class="news-meta">
-            <span class="source-badge">CNBC</span>
-            <span class="date-badge">26 Set 2026</span>
-          </div>
-          <p class="summary">Os modelos de IA open-source chineses — DeepSeek, Qwen (Alibaba) e Kimi (Moonshot AI) — estão a ganhar utilizadores a nível mundial a um ritmo acelerado. Legisladores americanos expressaram preocupações de segurança e influência, enquanto analistas debatem se as plataformas que alojam estes modelos conseguirão converter a adoção em receitas sustentáveis.</p>
+    </div>
+  </section>
+
+  <!-- EUA -->
+  <section>
+    <div class="section-header">
+      <span class="flag">🇺🇸</span>
+      <h2>Estados Unidos</h2>
+      <span class="count">4 artigos</span>
+    </div>
+    <div class="news-list">
+
+      <div class="news-card">
+        <a href="https://techstartups.com/2026/10/09/top-ai-news-stories-this-week-october-5-9-2026/" target="_blank" rel="noopener">OpenAI lança GPT-6 com Intelligent UI e mira receita de $70 mil milhões</a>
+        <div class="meta">
+          <span class="source-tag">Tech Startups</span>
+          <span class="date-tag">9 out 2026</span>
         </div>
-
-        <div class="news-card">
-          <a class="title" href="https://www.scmp.com/tech/tech-war/article/3338528/tech-war-china-takes-confident-strides-develop-more-ai-innovation-in-2026" target="_blank" rel="noopener">Receita de cloud IA da Alibaba deverá crescer mais de 50% no trimestre de setembro de 2026</a>
-          <div class="news-meta">
-            <span class="source-badge">South China Morning Post</span>
-            <span class="date-badge">Out 2026</span>
-          </div>
-          <p class="summary">Analistas preveem que a receita de cloud IA da Alibaba supere os 50% de crescimento no trimestre encerrado em setembro, após uma forte aposta em infraestrutura e modelos proprietários. O crescimento reflete a consolidação da China num mercado de cloud IA cada vez mais competitivo, tanto a nível interno como internacional.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://pandaily.com/" target="_blank" rel="noopener">Tencent lança Hy4 Preview e ByteDance apresenta Doubao 2.1 Lite com foco em eficiência</a>
-          <div class="news-meta">
-            <span class="source-badge">Pandaily</span>
-            <span class="date-badge">9 Out 2026</span>
-          </div>
-          <p class="summary">A Tencent lançou o Hy4 Preview, a mais recente iteração do seu modelo de linguagem, enquanto a ByteDance apresentou o Doubao 2.1 Lite, otimizado para inferência de baixo custo. Em paralelo, a openJiuwen disponibilizou em open-source uma plataforma de agentes empresariais, reforçando a aposta chinesa nos modelos eficientes e acessíveis.</p>
-        </div>
-
-        <div class="news-card">
-          <a class="title" href="https://restofworld.org/2026/china-america-tech-ai/" target="_blank" rel="noopener">China aposta em tecnologias além da IA para desafiar liderança tecnológica dos EUA</a>
-          <div class="news-meta">
-            <span class="source-badge">Rest of World</span>
-            <span class="date-badge">Out 2026</span>
-          </div>
-          <p class="summary">Segundo o Rest of World, a China está a desenvolver capacidades tecnológicas em áreas como computação quântica, biotecnologia e robótica avançada para além da IA, numa estratégia de diversificação face às restrições de exportação americanas. Investigadores como Jacob Coxon argumentam que Pequim pode ainda fechar a lacuna em IA ao replicar os avanços dos principais laboratórios ocidentais.</p>
-        </div>
-
+        <p class="summary">A OpenAI lançou o GPT-6 com capacidade de gerar interfaces interativas em vez de apenas texto, e a Bloomberg reporta que a empresa deverá atingir $70 mil milhões em receita anualizada até ao final do ano.</p>
       </div>
-    </section>
 
-  </div>
+      <div class="news-card">
+        <a href="https://techstartups.com/2026/10/08/top-tech-news-today-october-8-2026-globalfoundries-google-manus-microsoft-nvidia-openai-tencent-more/" target="_blank" rel="noopener">Google fecha maior acordo energético corporativo da história para alimentar IA</a>
+        <div class="meta">
+          <span class="source-tag">Tech Startups</span>
+          <span class="date-tag">8 out 2026</span>
+        </div>
+        <p class="summary">A Google assinou um acordo com a Constellation Energy para 3.590 megawatts de energia nuclear — o maior contrato de eletricidade corporativo alguma vez celebrado — para suportar a sua infraestrutura de IA.</p>
+      </div>
+
+      <div class="news-card">
+        <a href="https://techstartups.com/2026/10/09/tech-news-weekly-roundup-the-biggest-stories-in-ai-big-tech-startups-and-cybersecurity/" target="_blank" rel="noopener">Microsoft avança com agentes autónomos em PCs com proteções de segurança inéditas</a>
+        <div class="meta">
+          <span class="source-tag">Tech Startups</span>
+          <span class="date-tag">9 out 2026</span>
+        </div>
+        <p class="summary">A Microsoft está a integrar agentes de IA autónomos em computadores pessoais com hardware Nvidia, introduzindo simultaneamente novas salvaguardas para limitar o alcance das ações dos agentes sem supervisão humana.</p>
+      </div>
+
+      <div class="news-card">
+        <a href="https://techstartups.com/2026/10/06/top-tech-news-today-october-6-2026-amazon-amd-apple-deepseek-google-uber-more/" target="_blank" rel="noopener">Tribunal federal: Pentágono pode classificar Anthropic como risco na cadeia de abastecimento</a>
+        <div class="meta">
+          <span class="source-tag">Tech Startups</span>
+          <span class="date-tag">6 out 2026</span>
+        </div>
+        <p class="summary">Um tribunal de recurso federal confirmou que o Departamento de Defesa dos EUA tem o direito de designar a Anthropic como potencial risco na cadeia de abastecimento de tecnologia, numa decisão com implicações para toda a indústria de IA.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CHINA -->
+  <section>
+    <div class="section-header">
+      <span class="flag">🇨🇳</span>
+      <h2>China</h2>
+      <span class="count">4 artigos</span>
+    </div>
+    <div class="news-list">
+
+      <div class="news-card">
+        <a href="https://www.bloomberg.com/news/articles/2026-10-10/china-targets-ai-linked-jobs-with-new-employment-initiative" target="_blank" rel="noopener">China lança iniciativa nacional de emprego orientada para o impacto da IA no trabalho</a>
+        <div class="meta">
+          <span class="source-tag">Bloomberg</span>
+          <span class="date-tag">10 out 2026</span>
+        </div>
+        <p class="summary">Numa conferência do Conselho de Estado, as autoridades chinesas anunciaram uma iniciativa de emprego nacional destinada a adaptar as competências dos trabalhadores ao ritmo acelerado do desenvolvimento da inteligência artificial.</p>
+      </div>
+
+      <div class="news-card">
+        <a href="https://www.abc.net.au/news/2026-10-07/china-trials-identity-card-for-ai-digital-humans/107232848" target="_blank" rel="noopener">Pequim testa cartões de identidade para "humanos digitais" gerados por IA</a>
+        <div class="meta">
+          <span class="source-tag">ABC News</span>
+          <span class="date-tag">7 out 2026</span>
+        </div>
+        <p class="summary">A China está a pilotar um sistema de identificação para avatares de IA — os chamados "humanos digitais" — com nome, data de nascimento, morada e características faciais registadas, incluindo a capacidade de gerir carteiras de moeda digital.</p>
+      </div>
+
+      <div class="news-card">
+        <a href="https://asia.nikkei.com/business/technology/artificial-intelligence" target="_blank" rel="noopener">Alibaba prevê crescimento de mais de 50% na receita cloud de IA no terceiro trimestre</a>
+        <div class="meta">
+          <span class="source-tag">Nikkei Asia</span>
+          <span class="date-tag">out 2026</span>
+        </div>
+        <p class="summary">Analistas antecipam um crescimento superior a 50% na receita de serviços cloud com IA do Alibaba no trimestre de setembro, após avultados investimentos em infraestrutura, reforçando a posição da empresa na corrida tecnológica global.</p>
+      </div>
+
+      <div class="news-card">
+        <a href="https://www.scmp.com/topics/artificial-intelligence" target="_blank" rel="noopener">Presidente do Alibaba defende código aberto como modelo de IA para a Europa e o mundo</a>
+        <div class="meta">
+          <span class="source-tag">South China Morning Post</span>
+          <span class="date-tag">out 2026</span>
+        </div>
+        <p class="summary">O presidente do Alibaba argumentou que a estratégia de IA de código aberto da empresa pode servir de modelo para a Europa, acrescentando que as restrições de exportação dos EUA acabaram por acelerar o desenvolvimento do ecossistema de IA da China.</p>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  <span><span class="dot"></span> Atualizado automaticamente por Claude &nbsp;|&nbsp; Dados recolhidos em <span id="footer-date"></span></span>
+  Atualizado automaticamente por <span>Claude</span> &mdash; 12 de outubro de 2026, 07:24 UTC
+  &nbsp;|&nbsp; Fontes: Jornal Económico, TechCrunch, Bloomberg, ABC News, Tech Startups, Gibson Dunn, Nikkei Asia, SCMP
 </footer>
-
-<script>
-  (function () {
-    var now = new Date();
-    var opts = { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon' };
-    var formatted = now.toLocaleDateString('pt-PT', opts);
-    document.getElementById('update-time').textContent = 'Última atualização: ' + formatted + ' (Lisboa)';
-    document.getElementById('footer-date').textContent = now.toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' });
-  })();
-</script>
 
 </body>
 </html>
