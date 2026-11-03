@@ -5,472 +5,482 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard: IA & Transformação Digital</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg: #0f1117;
       --surface: #1a1d27;
-      --surface2: #22263a;
+      --card: #22263a;
+      --card-hover: #2a2f47;
       --border: #2e3350;
       --accent-pt: #00a859;
       --accent-eu: #003399;
-      --accent-eu-2: #ffcc00;
+      --accent-eu-light: #4a7fff;
       --accent-us: #b22234;
+      --accent-us-light: #ff6b7a;
       --accent-cn: #de2910;
-      --text: #e8eaf0;
-      --text-muted: #8b92b0;
-      --text-link: #7ab3ff;
-      --tag-bg: #2a2f47;
-      --radius: 10px;
+      --accent-cn-light: #ff7a6e;
+      --text: #e2e8f0;
+      --text-muted: #8892a4;
+      --text-link: #7eb8ff;
+      --badge-bg: #1e2540;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
       min-height: 100vh;
-      padding: 0 0 48px;
     }
 
     header {
-      background: linear-gradient(135deg, #12152a 0%, #1a1d27 100%);
+      background: linear-gradient(135deg, #12162a 0%, #1a1f38 100%);
       border-bottom: 1px solid var(--border);
-      padding: 32px 16px 24px;
+      padding: 28px 16px 24px;
       text-align: center;
     }
 
     header h1 {
-      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      font-size: clamp(1.4rem, 4vw, 2rem);
       font-weight: 700;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.5px;
       color: #fff;
+      margin-bottom: 6px;
     }
 
     header h1 span {
-      background: linear-gradient(90deg, #7ab3ff, #a78bfa);
+      background: linear-gradient(90deg, #4a7fff, #a855f7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .meta {
-      margin-top: 10px;
       font-size: 0.82rem;
       color: var(--text-muted);
     }
 
-    .badge {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
     main {
-      max-width: 1280px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 16px 0;
-    }
-
-    .regions-grid {
+      padding: 32px 16px 48px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+      gap: 28px;
     }
 
     .region {
       background: var(--surface);
-      border-radius: var(--radius);
       border: 1px solid var(--border);
+      border-radius: 14px;
       overflow: hidden;
     }
 
     .region-header {
-      padding: 16px 20px;
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid var(--border);
     }
 
-    .region-header.pt { border-left: 4px solid var(--accent-pt); }
-    .region-header.eu { border-left: 4px solid var(--accent-eu-2); }
-    .region-header.us { border-left: 4px solid var(--accent-us); }
-    .region-header.cn { border-left: 4px solid var(--accent-cn); }
+    .region-header.pt { border-top: 3px solid var(--accent-pt); }
+    .region-header.eu { border-top: 3px solid var(--accent-eu-light); }
+    .region-header.us { border-top: 3px solid var(--accent-us-light); }
+    .region-header.cn { border-top: 3px solid var(--accent-cn-light); }
 
-    .region-flag { font-size: 1.6rem; }
+    .flag { font-size: 1.5rem; line-height: 1; }
 
     .region-title {
       font-size: 1rem;
       font-weight: 700;
       color: #fff;
+      letter-spacing: 0.3px;
     }
 
-    .region-sub {
-      font-size: 0.72rem;
+    .region-subtitle {
+      font-size: 0.75rem;
       color: var(--text-muted);
       margin-top: 1px;
     }
 
-    .cards {
-      padding: 12px;
+    .news-list {
+      padding: 12px 16px 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .card {
-      background: var(--surface2);
-      border-radius: 8px;
-      padding: 14px 16px;
+    .news-card {
+      background: var(--card);
       border: 1px solid var(--border);
-      transition: border-color 0.15s;
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: background 0.15s;
     }
 
-    .card:hover { border-color: #4a5080; }
+    .news-card:hover { background: var(--card-hover); }
 
-    .card-title {
-      font-size: 0.88rem;
+    .news-title {
+      font-size: 0.93rem;
       font-weight: 600;
       line-height: 1.4;
       margin-bottom: 6px;
     }
 
-    .card-title a {
+    .news-title a {
       color: var(--text-link);
       text-decoration: none;
     }
 
-    .card-title a:hover { text-decoration: underline; }
+    .news-title a:hover { text-decoration: underline; }
 
-    .card-meta {
+    .news-meta {
       display: flex;
-      align-items: center;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
       margin-bottom: 8px;
     }
 
-    .source-tag {
+    .badge {
       font-size: 0.7rem;
-      padding: 2px 8px;
+      background: var(--badge-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
       border-radius: 4px;
-      background: var(--tag-bg);
-      color: var(--text-muted);
-      font-weight: 600;
+      padding: 2px 7px;
+      font-weight: 500;
     }
 
-    .date-tag {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    .card-summary {
-      font-size: 0.8rem;
-      color: #a8aec8;
+    .news-summary {
+      font-size: 0.83rem;
+      color: #b0bad0;
       line-height: 1.55;
     }
 
     footer {
-      margin-top: 40px;
       text-align: center;
+      padding: 20px 16px 28px;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      font-size: 0.75rem;
-      padding: 0 16px;
+      border-top: 1px solid var(--border);
     }
 
-    footer strong { color: #6b80cc; }
+    footer strong { color: #a0aec0; }
 
-    @media (max-width: 640px) {
-      .regions-grid { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      main { padding: 20px 12px 40px; gap: 20px; }
+      .news-list { padding: 10px 12px 12px; }
+      .region-header { padding: 14px 14px 12px; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Dashboard: <span>IA &amp; Transformação Digital</span></h1>
-  <p class="meta">Atualizado em 2 de novembro de 2026 &mdash; 07:20 UTC</p>
-  <span class="badge">Agregado automaticamente &bull; 4 regiões</span>
+  <h1>Dashboard: <span>IA & Transformação Digital</span></h1>
+  <p class="meta">Atualizado em 3 de novembro de 2026 &nbsp;·&nbsp; Últimas 48 horas</p>
 </header>
 
 <main>
-  <div class="regions-grid">
 
-    <!-- PORTUGAL -->
-    <div class="region">
-      <div class="region-header pt">
-        <span class="region-flag">🇵🇹</span>
-        <div>
-          <div class="region-title">Portugal</div>
-          <div class="region-sub">IA e Transformação Digital</div>
-        </div>
-      </div>
-      <div class="cards">
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://ia.gov.pt/noticias-e-destaques/arte-destaca-estrategia-digital-nacional-e-agenda-de-inteligencia-artificial-na-smart-country-convention-2026" target="_blank" rel="noopener">
-              Portugal apresenta estratégia de IA na Smart Country Convention 2026 em Berlim
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">IA.gov.pt / ARTE</span>
-            <span class="date-tag">Out 2026</span>
-          </div>
-          <p class="card-summary">O CTO do Estado e presidente da ARTE, Manuel Dias, apresentou a keynote «Portugal's AI Strategy» na conferência de Berlim, focando a IA na Administração Pública com dados, automação e agentes inteligentes.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://aiact-portugal.pt/pages/ania-2026-2030.html" target="_blank" rel="noopener">
-              ANIA 2026-2030: Portugal aprova Agenda Nacional de Inteligência Artificial com 400 M€
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">Diário da República</span>
-            <span class="date-tag">Jan 2026</span>
-          </div>
-          <p class="card-summary">A Agenda Nacional de IA (ANIA) foi aprovada pela Resolução do Conselho de Ministros n.º 2/2026, prevendo um investimento superior a 400 milhões de euros até 2030, com 25M€ destinados à Administração Pública.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://www.publico.pt/2026/06/22/enter/noticia/portugal-juntase-espanha-turquia-criar-fabrica-inteligencia-artificial-2179071" target="_blank" rel="noopener">
-              Portugal, Espanha e Turquia criam "fábrica de inteligência artificial" no MareNostrum 5
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">Público</span>
-            <span class="date-tag">Jun 2026</span>
-          </div>
-          <p class="card-summary">Portugal juntou-se a Espanha e à Turquia no consórcio que vai instalar uma fábrica de IA no supercomputador MareNostrum 5, reforçando a soberania tecnológica europeia e o acesso a capacidade de computação avançada.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://digital.gov.pt/pt/inteligencia-artificial" target="_blank" rel="noopener">
-              IA.gov.pt online: Portugal lança portal de IA da Administração Pública
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">digital.gov.pt</span>
-            <span class="date-tag">Jul 2026</span>
-          </div>
-          <p class="card-summary">O portal IA.gov.pt, dedicado à Inteligência Artificial na Administração Pública portuguesa, entrou em funcionamento em julho de 2026, centralizando informação, recursos e orientações para organismos públicos.</p>
-        </div>
-
+  <!-- PORTUGAL -->
+  <section class="region">
+    <div class="region-header pt">
+      <span class="flag">🇵🇹</span>
+      <div>
+        <div class="region-title">Portugal</div>
+        <div class="region-subtitle">IA e transformação digital nacional</div>
       </div>
     </div>
+    <div class="news-list">
 
-    <!-- EUROPA -->
-    <div class="region">
-      <div class="region-header eu">
-        <span class="region-flag">🇪🇺</span>
-        <div>
-          <div class="region-title">Europa</div>
-          <div class="region-sub">AI Act &amp; Iniciativas Digitais</div>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://ia.gov.pt/noticias-e-destaques/arte-destaca-estrategia-digital-nacional-e-agenda-de-inteligencia-artificial-na-smart-country-convention-2026" target="_blank" rel="noopener">
+            Portugal apresenta estratégia de IA na Smart Country Convention 2026, em Berlim
+          </a>
         </div>
+        <div class="news-meta">
+          <span class="badge">ia.gov.pt</span>
+          <span class="badge">Out/Nov 2026</span>
+        </div>
+        <p class="news-summary">O CTO do Estado, Manuel Dias, apresentou em Berlim a visão portuguesa para a IA na Administração Pública, centrada em inovação responsável, soberania tecnológica e transformação dos serviços públicos com agentes inteligentes e automação.</p>
       </div>
-      <div class="cards">
 
-        <div class="card">
-          <div class="card-title">
-            <a href="https://4ai.ai/news/eu-ai-act-2026-transparency-rules-take-effect-and-europe-needs-local-ai-brands/" target="_blank" rel="noopener">
-              Regras de Transparência do AI Act em vigor desde agosto de 2026
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">4AI.ai</span>
-            <span class="date-tag">Ago 2026</span>
-          </div>
-          <p class="card-summary">Desde 2 de agosto de 2026, as obrigações do Artigo 50 do AI Act estão em vigor: divulgação de chatbots, marcação machine-readable de conteúdo sintético e etiquetas de deepfake tornam-se obrigatórias na UE.</p>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://www.publico.pt/2026/06/22/enter/noticia/portugal-juntase-espanha-turquia-criar-fabrica-inteligencia-artificial-2179071" target="_blank" rel="noopener">
+            Portugal, Espanha e Turquia criam "fábrica de inteligência artificial" com o BSC
+          </a>
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://futureagi.com/blog/eu-ai-act-timeline-digital-omnibus-2027/" target="_blank" rel="noopener">
-              Digital Omnibus adia regras de alto risco do AI Act para dezembro de 2027
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">FutureAGI</span>
-            <span class="date-tag">Out 2026</span>
-          </div>
-          <p class="card-summary">O Regulamento (UE) 2026/1744 (Digital Omnibus) adiou as obrigações de IA de alto risco: os casos do Anexo III passam para 2 de dezembro de 2027, e os produtos regulados (ex.: dispositivos médicos) para agosto de 2028.</p>
+        <div class="news-meta">
+          <span class="badge">Público</span>
+          <span class="badge">Jun 2026</span>
         </div>
+        <p class="news-summary">Os três países formalizaram um consórcio ibérico-mediterrânico ligado ao Barcelona Supercomputing Center para desenvolver uma infraestrutura partilhada de computação e treino de modelos de IA de grande escala.</p>
+      </div>
 
-        <div class="card">
-          <div class="card-title">
-            <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/" target="_blank" rel="noopener">
-              Nova proibição de "nudifiers" entra em vigor em dezembro de 2026 no AI Act
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">Gibson Dunn</span>
-            <span class="date-tag">Nov 2026</span>
-          </div>
-          <p class="card-summary">O Omnibus acrescenta uma nova proibição, aplicável a partir de 2 de dezembro de 2026: geração não consentida de imagens íntimas ("nudifiers") e material de abuso sexual infantil passam a ser explicitamente proibidos pelo AI Act.</p>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://digital.gov.pt/pt/estrategia-digital/agenda-nacional-de-ia" target="_blank" rel="noopener">
+            ANIA 2026-2030 aprovada com mais de 400 milhões de euros mobilizados
+          </a>
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://www.tokenpost.com/news/technology/46116" target="_blank" rel="noopener">
-              Anthropic estende marcas d'água invisíveis a modelos Claude anteriores para cumprir AI Act
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">TokenPost</span>
-            <span class="date-tag">Out/Nov 2026</span>
-          </div>
-          <p class="card-summary">Em resposta às obrigações do Artigo 50 do AI Act, a Anthropic alargou as marcas d'água de texto invisíveis aos seus modelos Claude anteriores, assegurando a identificação de conteúdo gerado por IA em conformidade com a regulamentação europeia.</p>
+        <div class="news-meta">
+          <span class="badge">digital.gov.pt</span>
+          <span class="badge">Jan 2026</span>
         </div>
+        <p class="news-summary">A Agenda Nacional de Inteligência Artificial (ANIA) foi aprovada pela Resolução do Conselho de Ministros n.º 2/2026, com 400M€ previstos até 2030, incluindo 25M€ para modernizar a Administração Pública com IA e uma infraestrutura nacional de computação de alto desempenho.</p>
+      </div>
 
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://aiact-portugal.pt/pages/ania-2026-2030.html" target="_blank" rel="noopener">
+            Portal IA.gov.pt lançado e assistente AMALIA disponível em versão multimodal
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">aiact-portugal.pt</span>
+          <span class="badge">Jul 2026</span>
+        </div>
+        <p class="news-summary">O portal público IA.gov.pt foi criado como ponto central de acesso à estratégia portuguesa de IA. Em julho de 2026, o assistente AMALIA passou a suportar imagens e documentos, reforçando a aposta na IA generativa para os serviços do Estado.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EUROPA -->
+  <section class="region">
+    <div class="region-header eu">
+      <span class="flag">🇪🇺</span>
+      <div>
+        <div class="region-title">Europa</div>
+        <div class="region-subtitle">AI Act, regulação e iniciativas digitais</div>
       </div>
     </div>
+    <div class="news-list">
 
-    <!-- EUA -->
-    <div class="region">
-      <div class="region-header us">
-        <span class="region-flag">🇺🇸</span>
-        <div>
-          <div class="region-title">EUA</div>
-          <div class="region-sub">Indústria &amp; Política de IA</div>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://theagentindex.io/guides/eu-ai-act-timeline/" target="_blank" rel="noopener">
+            Digital Omnibus (Reg. EU 2026/1744) adia obrigações de alto risco do AI Act para 2027-2028
+          </a>
         </div>
+        <div class="news-meta">
+          <span class="badge">theagentindex.io</span>
+          <span class="badge">Jul 2026</span>
+        </div>
+        <p class="news-summary">O regulamento Digital Omnibus, assinado em julho de 2026, adiou as obrigações de alto risco do AI Act: sistemas do Anexo III até 2 de dezembro de 2027 e produtos regulados do Anexo I até 2 de agosto de 2028, aliviando empresas em plena fase de implementação.</p>
       </div>
-      <div class="cards">
 
-        <div class="card">
-          <div class="card-title">
-            <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-november-2-2026/" target="_blank" rel="noopener">
-              IPO da Anthropic previsto para a semana de 16 de novembro de 2026
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">The Neuron</span>
-            <span class="date-tag">2 Nov 2026</span>
-          </div>
-          <p class="card-summary">A Anthropic deverá tornar-se pública ainda este mês, com o processo de IPO esperado para a semana de 16 de novembro, numa operação muito aguardada pelo setor da IA e pelo mercado de capitais tecnológico.</p>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://www.regulation-ai.eu/en/ai-act/" target="_blank" rel="noopener">
+            2 de dezembro de 2026: novas proibições do AI Act entram em vigor
+          </a>
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://aiweekly.co/ai-news-today" target="_blank" rel="noopener">
-              OpenAI reduz objetivo de captação para $20 mil milhões na mais recente ronda de financiamento
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">AI Weekly / CNBC</span>
-            <span class="date-tag">Nov 2026</span>
-          </div>
-          <p class="card-summary">A OpenAI reduziu o seu objetivo de captação de fundos na última ronda de financiamento, fixando-o em até $20 mil milhões, numa revisão em baixa que reflete uma recalibração das expetativas de valorização no mercado privado de IA.</p>
+        <div class="news-meta">
+          <span class="badge">regulation-ai.eu</span>
+          <span class="badge">Nov 2026</span>
         </div>
+        <p class="news-summary">A partir de 2 de dezembro de 2026, entram em vigor novas proibições ao abrigo do AI Act europeu, incluindo a obrigação de os sistemas de IA generativa presentes no mercado sinalizarem os seus outputs. Empresas com incumprimento arriscam multas de até 35 milhões de euros ou 7% do volume de negócios global.</p>
+      </div>
 
-        <div class="card">
-          <div class="card-title">
-            <a href="https://mindandmachineweekly.substack.com/p/mind-and-machine-weekly-1-november" target="_blank" rel="noopener">
-              Meta anuncia oferta recorde de ações de $97,5 mil milhões para acelerar infraestrutura de IA
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">Mind & Machine Weekly</span>
-            <span class="date-tag">1 Nov 2026</span>
-          </div>
-          <p class="card-summary">A Meta revelou uma oferta de ações sem precedentes de $97,5 mil milhões destinada a acelerar a construção de data centers e infraestrutura de IA, reforçando a aposta estratégica da empresa no domínio da inteligência artificial.</p>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence" target="_blank" rel="noopener">
+            Obrigações de transparência do AI Act em vigor desde agosto de 2026
+          </a>
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://thehansindia.com/tech/upcoming-ai-updates-in-november-2026-major-developments-to-watch-1137527" target="_blank" rel="noopener">
-              Microsoft Ignite (17-20 nov.) focado em Copilot e agentes de IA empresariais
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">The Hans India</span>
-            <span class="date-tag">Nov 2026</span>
-          </div>
-          <p class="card-summary">O Microsoft Ignite, agendado para 17 a 20 de novembro, deverá ter o Copilot e os agentes de IA empresariais como temas centrais, com novos anúncios de integração de IA em produtos Microsoft 365 e Azure.</p>
+        <div class="news-meta">
+          <span class="badge">Comissão Europeia</span>
+          <span class="badge">Ago 2026</span>
         </div>
+        <p class="news-summary">Desde 2 de agosto de 2026, os deveres gerais de transparência do AI Act estão plenamente em vigor, com o AI Office e as autoridades nacionais a fiscalizar o cumprimento. O regulamento aplica-se também a fornecedores fora da UE que coloquem produtos no mercado europeu.</p>
+      </div>
 
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://decodethefuture.org/en/eu-ai-act-explained/" target="_blank" rel="noopener">
+            AI Act europeu: guia atualizado de prazos, riscos e coimas para 2026
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">decodethefuture.org</span>
+          <span class="badge">2026</span>
+        </div>
+        <p class="news-summary">Com o Digital Omnibus a reorganizar o calendário, diversas organizações publicaram guias actualizados do AI Act para 2026, detalhando os níveis de risco, quais as obrigações já em vigor e as que foram adiadas — recurso essencial para equipas de compliance em toda a Europa.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EUA -->
+  <section class="region">
+    <div class="region-header us">
+      <span class="flag">🇺🇸</span>
+      <div>
+        <div class="region-title">Estados Unidos</div>
+        <div class="region-subtitle">Big tech, política e mercado de IA</div>
       </div>
     </div>
+    <div class="news-list">
 
-    <!-- CHINA -->
-    <div class="region">
-      <div class="region-header cn">
-        <span class="region-flag">🇨🇳</span>
-        <div>
-          <div class="region-title">China</div>
-          <div class="region-sub">IA, Big Tech &amp; Estratégia Nacional</div>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://simplifyaitools.com/newsletter/ai-news-november-2026-anthropic-microsoft-google/" target="_blank" rel="noopener">
+            Anthropic prepara IPO histórico com 17 mil milhões de dólares em receitas no Q3
+          </a>
         </div>
+        <div class="news-meta">
+          <span class="badge">simplifyaitools.com</span>
+          <span class="badge">Nov 2026</span>
+        </div>
+        <p class="news-summary">A Anthropic terá apresentado o prospeto de IPO em outubro e os documentos revelam receitas de 17 mil milhões de dólares no terceiro trimestre de 2026, com compromissos de compra de 895 mil milhões de dólares, posicionando a empresa para uma das maiores estreias bolsistas da história tecnológica.</p>
       </div>
-      <div class="cards">
 
-        <div class="card">
-          <div class="card-title">
-            <a href="https://www.nationpathindia.com/technology/china-proposes-export-controls-23-ai-technologies-october-2026" target="_blank" rel="noopener">
-              China propõe controlo de exportações para 23 tecnologias de IA
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">Nation Path India</span>
-            <span class="date-tag">Out 2026</span>
-          </div>
-          <p class="card-summary">A China publicou a 16 de outubro um catálogo de 23 tecnologias de IA sujeitas a controlos de exportação, incluindo modelos avançados, agentes inteligentes e clusters de computação; o período de consulta pública termina a 15 de novembro.</p>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://techstartups.com/2026/11/02/top-tech-news-today-november-2-2026-the-biggest-stories-in-ai-startups-and-big-tech/" target="_blank" rel="noopener">
+            Oracle levanta 20 mil milhões de dólares para infraestrutura de IA; Marvell fecha maior M&A de sempre em tech
+          </a>
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://etcjournal.com/2026/11/01/the-global-ai-race-november-2026-favorites-and-dark-horses/" target="_blank" rel="noopener">
-              Apple e Alibaba: Qwen vai alimentar o Apple Intelligence na China a partir de dezembro
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">ETC Journal</span>
-            <span class="date-tag">1 Nov 2026</span>
-          </div>
-          <p class="card-summary">A Apple e a Alibaba anunciaram a 31 de outubro que o modelo Qwen da Alibaba vai alimentar o Apple Intelligence na versão chinesa do Siri, Writing Tools e Visual Intelligence, com lançamento público em dezembro via iOS 27.3.</p>
+        <div class="news-meta">
+          <span class="badge">techstartups.com</span>
+          <span class="badge">2 Nov 2026</span>
         </div>
+        <p class="news-summary">A Oracle anunciou uma captação de 20 mil milhões de dólares em ações e obrigações para expandir a sua infraestrutura de IA, enquanto a Marvell fechou um acordo de 115 mil milhões de dólares com a Lumentum — a maior fusão e aquisição de empresas tecnológicas cotadas em bolsa de sempre.</p>
+      </div>
 
-        <div class="card">
-          <div class="card-title">
-            <a href="https://www.newsbytesapp.com/news/science/chinas-robotics-industry-shifts-to-ai-with-13b-h1-2026/tldr" target="_blank" rel="noopener">
-              Setor de robótica da China atrai $13 mil milhões em investimento de IA no 1.º semestre de 2026
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">NewsBytesApp</span>
-            <span class="date-tag">Nov 2026</span>
-          </div>
-          <p class="card-summary">A indústria de robótica chinesa captou $13 mil milhões no primeiro semestre de 2026, impulsionada pela integração de IA em robôs industriais e humanoides; as restrições de exportação de chips NVIDIA dos EUA continuam a dificultar o acesso a hardware avançado.</p>
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-tuesday-november-3-2026/" target="_blank" rel="noopener">
+            OpenAI assina acordo com Abu Dhabi e contrata ex-secretário do Exército dos EUA
+          </a>
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <a href="https://blog.mean.ceo/open-source-ai-news-november-2026/" target="_blank" rel="noopener">
-              Stanford AI Index 2026: diferença de desempenho entre modelos chineses e americanos continua a diminuir
-            </a>
-          </div>
-          <div class="card-meta">
-            <span class="source-tag">Stanford / Mean.CEO Blog</span>
-            <span class="date-tag">Nov 2026</span>
-          </div>
-          <p class="card-summary">O Stanford AI Index de 2026 confirma que a lacuna de desempenho entre os principais modelos de IA chineses (DeepSeek, Alibaba Qwen, Moonshot AI) e americanos continua a reduzir-se, embora o investimento privado nos EUA permaneça largamente superior.</p>
+        <div class="news-meta">
+          <span class="badge">theneuron.ai</span>
+          <span class="badge">3 Nov 2026</span>
         </div>
+        <p class="news-summary">A OpenAI formalizou parcerias estratégicas para integrar IA nos sectores governamental e industrial de Abu Dhabi, enquanto nos EUA contratou o ex-secretário do Exército Dan Driscoll para liderar a área de segurança nacional, reforçando a sua presença no mercado de defesa.</p>
+      </div>
 
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://explainx.ai/catch-up-on-ai/2026-11-02" target="_blank" rel="noopener">
+            Microsoft lança Frontier Company com 2,5 mil milhões e 6.000 engenheiros para IA empresarial
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">explainx.ai</span>
+          <span class="badge">2 Nov 2026</span>
+        </div>
+        <p class="news-summary">A Microsoft apresentou a "Frontier Company", uma iniciativa de 2,5 mil milhões de dólares com 6.000 engenheiros dedicados a ajudar grandes empresas a implementar IA em produção, antecipando o Microsoft Ignite previsto para 17-20 de novembro de 2026.</p>
+      </div>
+
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://aiweekly.co/ai-news-today" target="_blank" rel="noopener">
+            Nova Iorque aprova regulação de chatbots; OpenAI e Anthropic monitorizam eleições de 3 de novembro
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">aiweekly.co</span>
+          <span class="badge">Nov 2026</span>
+        </div>
+        <p class="news-summary">O estado de Nova Iorque implementou novas regras para chatbots de IA em contextos públicos e comerciais. Paralelamente, a OpenAI e a Anthropic ativaram equipas de monitorização eleitoral para as eleições intercalares americanas de hoje, 3 de novembro, prevenindo desinformação gerada por IA.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CHINA -->
+  <section class="region">
+    <div class="region-header cn">
+      <span class="flag">🇨🇳</span>
+      <div>
+        <div class="region-title">China</div>
+        <div class="region-subtitle">IA, robótica e estratégia governamental</div>
       </div>
     </div>
+    <div class="news-list">
 
-  </div><!-- /.regions-grid -->
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://www.stdaily.com/web/English/2026-11/02/content_606875.html" target="_blank" rel="noopener">
+            China publica White Paper sobre cooperação internacional em IA e governança
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">stdaily.com</span>
+          <span class="badge">2 Nov 2026</span>
+        </div>
+        <p class="news-summary">Pequim divulgou um livro branco sobre a sua abordagem à cooperação internacional em IA, assinalando uma viragem da exportação de hardware para a partilha de soluções industriais e modelos open-source — um sinal da ambição chinesa em liderar a governança global da tecnologia.</p>
+      </div>
+
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://tech-insider.org/china-ai-export-curbs-23-technologies-2026/" target="_blank" rel="noopener">
+            China propõe restrições à exportação de 23 tecnologias de IA, incluindo pesos de modelos
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">tech-insider.org</span>
+          <span class="badge">Nov 2026</span>
+        </div>
+        <p class="news-summary">Os ministérios do Comércio e da Ciência de Pequim propuseram adicionar 40 tecnologias ao catálogo de exportações restritas, 23 das quais relacionadas com IA — incluindo pesos de modelos de linguagem de grande escala. O período de consulta pública termina a 15 de novembro de 2026.</p>
+      </div>
+
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://www.newsbytesapp.com/news/science/chinas-robotics-industry-shifts-to-ai-with-13b-h1-2026/tldr" target="_blank" rel="noopener">
+            Empresas chinesas de robótica inteligente captam 13 mil milhões de dólares em investimentos no 1.º semestre
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">newsbytesapp.com</span>
+          <span class="badge">Nov 2026</span>
+        </div>
+        <p class="news-summary">O sector de IA incorporada (embodied AI) na China captou 93,5 mil milhões de yuan (cerca de 13 mil milhões de dólares) em 322 operações de financiamento na primeira metade de 2026, acelerando a integração de modelos de linguagem em robôs físicos, apesar das restrições em chips avançados.</p>
+      </div>
+
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://www.business-standard.com/world-news/what-s-inside-china-s-18-point-plan-to-protect-workers-from-ai-job-losses-126110200929_1.html" target="_blank" rel="noopener">
+            Conselho de Estado chinês apresenta plano de 18 pontos para proteger trabalhadores do impacto da IA
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">Business Standard</span>
+          <span class="badge">2 Nov 2026</span>
+        </div>
+        <p class="news-summary">Pequim publicou um plano nacional que obriga empresas a avaliar o risco de desemprego antes de implementarem IA, exige aviso prévio aos trabalhadores afetados e prevê programas de requalificação profissional — a resposta mais detalhada do governo chinês ao impacto laboral da automação inteligente.</p>
+      </div>
+
+      <div class="news-card">
+        <div class="news-title">
+          <a href="https://tuaw.com/2026/11/01/apple-intelligence-finally-arrives-in-china-after-two-year-delay" target="_blank" rel="noopener">
+            Apple Intelligence chega finalmente à China a 4 de novembro, com IA da Alibaba/Qwen
+          </a>
+        </div>
+        <div class="news-meta">
+          <span class="badge">TUAW</span>
+          <span class="badge">1 Nov 2026</span>
+        </div>
+        <p class="news-summary">Após dois anos de atraso e negociações regulatórias, a Apple vai lançar as funcionalidades de IA em iPhones na China a 4 de novembro, utilizando os modelos Qwen da Alibaba. O lançamento inclui edição de fotos com IA, respostas inteligentes e ferramentas de escrita, com o Siri inteligente previsto para uma fase posterior.</p>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  <p>Atualizado automaticamente por <strong>Claude</strong> &bull; 2 de novembro de 2026</p>
-  <p style="margin-top:6px; font-size:0.7rem; opacity:0.6;">Dashboard gerado por Claude Agent &mdash; claude-agent@anthropic.com</p>
+  <p>Atualizado automaticamente por <strong>Claude</strong> &nbsp;·&nbsp; 3 de novembro de 2026 &nbsp;·&nbsp; Fontes: The Neuron, TechStartups, AIWeekly, Digital.gov.pt, ia.gov.pt, stdaily.com, e outros</p>
 </footer>
 
 </body>
