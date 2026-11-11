@@ -235,11 +235,13 @@ function mailto(subject,body){location.href='mailto:'+EMAIL+'?subject='+encodeUR
 function mail(subject,body,btn){
   if(!(nome.value||'').trim()){alert2(btn,'Escrevam o vosso nome no topo do Kit');nome.focus();return;}
   const o=btn.textContent;btn.disabled=true;btn.textContent='A enviar…';
-  fetch('https://formsubmit.co/ajax/'+EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+  const ctl=('AbortController' in window)?new AbortController():null;const to=setTimeout(function(){if(ctl)ctl.abort();},10000);
+  fetch('https://formsubmit.co/ajax/'+EMAIL,{method:'POST',signal:ctl?ctl.signal:undefined,headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:subject,_template:'box',_captcha:'false',Nome:nome.value,Conteudo:body})})
    .then(function(r){return r.json();})
    .then(function(j){if(!(j&&(j.success===true||j.success==='true')))throw new Error('x');btn.textContent='Enviado ✓';btn.classList.add('done');setTimeout(function(){btn.textContent=o;btn.classList.remove('done');btn.disabled=false;},3000);})
-   .catch(function(){btn.textContent=o;btn.disabled=false;mailto(subject,body);});
+   .catch(function(){btn.textContent=o;btn.disabled=false;mailto(subject,body);})
+   .then(function(){clearTimeout(to);});
 }
 function alert2(btn,msg){const o=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=o;},2500);}
 /* Auditoria */
