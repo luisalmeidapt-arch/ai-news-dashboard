@@ -22,6 +22,8 @@ h1{margin:4px 0 0;font-size:clamp(24px,2.6vw,42px);line-height:1.12;max-width:26
 .tabs{display:flex;gap:6px;margin-top:14px}
 .tabs a{text-decoration:none;color:var(--fg2);font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid var(--line)}
 .tabs a[aria-current]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tabs button{margin-left:auto;font:600 12px var(--sans);color:var(--fg3);background:transparent;border:1px dashed var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+.tabs button.confirm{color:#fff;background:var(--bad);border:1px solid var(--bad)}
 .qr{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:14px;padding:12px 16px}
 .qr #qrc{background:#fff;padding:6px;border-radius:8px;line-height:0}
 .qr p{margin:0;font-size:13px;color:var(--fg2);max-width:18ch}
@@ -61,7 +63,7 @@ td.d{font-weight:800}td.d.pos{color:var(--bad)}td.d.zero{color:var(--ok)}
   <div>
     <p class="eyebrow">Pulso da Sala · PG IA para a Gestão de RH · Módulo II</p>
     <h1 id="title">Que tarefa de RH vos consome a semana?</h1>
-    <nav class="tabs"><a href="#" data-m="tarefa">Abertura</a><a href="#" data-m="gemeo">Teste do gémeo</a></nav>
+    <nav class="tabs"><a href="#" data-m="tarefa">Abertura</a><a href="#" data-m="gemeo">Teste do gémeo</a><button type="button" id="limpar">Limpar resultados</button></nav>
   </div>
   <div class="qr"><div id="qrc"></div><p><b>Respondam aqui</b>Anónimo · leva 1 minuto</p></div>
 </header>
@@ -111,6 +113,13 @@ function setMode(m){MODE=m;$('v-tarefa').hidden=m!=='tarefa';$('v-gemeo').hidden
   document.querySelectorAll('.tabs a').forEach(function(a){if(a.dataset.m===m)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});setQR();render();}
 document.querySelectorAll('.tabs a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();setMode(a.dataset.m);});});
 let DATA=[];
+const KEY='pea-painel-desde-'+S;
+let DESDE=0;try{DESDE=parseInt(localStorage.getItem(KEY)||'0',10)||0;}catch(e){}
+const lb=$('limpar');let armed=null;
+lb.addEventListener('click',function(){
+  if(!armed){lb.classList.add('confirm');lb.textContent='Confirmar: limpar?';armed=setTimeout(function(){armed=null;lb.classList.remove('confirm');lb.textContent='Limpar resultados';},4000);return;}
+  clearTimeout(armed);armed=null;DESDE=Math.floor(Date.now()/1000);try{localStorage.setItem(KEY,String(DESDE));}catch(e){}
+  lb.classList.remove('confirm');lb.textContent='Limpar resultados';DATA=[];render();poll();});
 function bars(box,rows,unit){box.textContent='';if(!rows.length){box.appendChild(el('div','empty','Ainda sem respostas.'));return;}
   const max=Math.max.apply(null,rows.map(function(r){return r[1];}))||1;
   rows.forEach(function(r,i){const b=el('div','bar'+(i===0?' top':''));b.appendChild(el('span',null,r[0]));const t=el('div','t');const f=el('i');f.style.width=(r[1]/max*100)+'%';t.appendChild(f);b.appendChild(t);
@@ -142,8 +151,8 @@ function render(){
 }
 function poll(){
   fetch('https://ntfy.sh/'+TOPIC+'/json?poll=1&since=all',{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();})
-   .then(function(txt){const out=[];txt.split('\n').forEach(function(l){if(!l.trim())return;try{const m=JSON.parse(l);if(m.event==='message'){const d=JSON.parse(m.message);if(d&&d.k)out.push(d);}}catch(e){}});
-     DATA=out;render();$('status').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-PT')+' · sessão '+S+' · atualiza sozinho a cada 6 segundos';})
+   .then(function(txt){const out=[];txt.split('\n').forEach(function(l){if(!l.trim())return;try{const m=JSON.parse(l);if(m.event==='message'&&(m.time||0)>DESDE){const d=JSON.parse(m.message);if(d&&d.k)out.push(d);}}catch(e){}});
+     DATA=out;render();$('status').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-PT')+' · sessão '+S+(DESDE?' · a contar desde as '+new Date(DESDE*1000).toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}):'')+' · atualiza sozinho a cada 6 segundos';})
    .catch(function(){$('status').textContent='Sem ligação ao serviço de respostas. Nova tentativa dentro de 6 segundos.';});
 }
 setMode(MODE);poll();setInterval(poll,6000);
