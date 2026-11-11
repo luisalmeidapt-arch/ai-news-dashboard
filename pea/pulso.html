@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pulso da Sala · RH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Pulso da Sala: formulário de telemóvel, um ecrã, marca PEA */
+:root{--bg:#fff;--fg:#1D1F22;--fg2:#55585E;--fg3:#8A8D93;--card:#F6F5F3;--line:#E4E2DE;--accent:#E86B15;--accent-soft:#FCE5D4;--accent-ink:#B4500C;--ok:#2E7D4F;
+  --sans:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#1D1F22;--fg:#F2F1EE;--fg2:#BDBBB6;--fg3:#8C8B87;--card:#27292D;--line:#3A3C40;--accent:#F28A45;--accent-soft:#4A2814;--accent-ink:#F7B184;--ok:#6CC594;color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--sans)}
+body{padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:5px;background:var(--accent)}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+section{display:flex;flex-direction:column;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.brand b{display:inline-block;background:var(--accent);color:#fff;padding:3px 8px;border-radius:5px;letter-spacing:.06em}
+h1{margin:0;font-size:clamp(23px,6vw,30px);line-height:1.18;text-wrap:balance}
+.sub{margin:0;color:var(--fg2)}
+form{display:flex;flex-direction:column;gap:20px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;min-width:0}
+legend,label.q{font-weight:600;font-size:14.5px;padding:0;margin-bottom:2px}
+.hint{font-size:12.5px;color:var(--fg3);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{border:1.5px solid var(--line);border-radius:999px;padding:8px 13px;font-size:13.5px;cursor:pointer;user-select:none;background:var(--bg)}
+.chips input:checked+label{background:var(--accent);border-color:var(--accent);color:#fff}
+.chips input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+textarea,input[type=text],input[type=number]{width:100%;font:15px/1.5 var(--sans);color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 12px}
+textarea{min-height:84px;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.range{display:flex;align-items:center;gap:14px}
+.range input{flex:1;accent-color:var(--accent)}
+.range output{min-width:74px;text-align:right;font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:600 16px var(--sans);border:0;background:var(--accent);color:#fff;border-radius:12px;padding:15px;cursor:pointer}
+button:disabled{opacity:.55;cursor:default}
+.msg{font-size:13.5px;color:#B3261E;margin:0}
+.done{background:var(--card);border-radius:14px;padding:26px 20px;display:flex;flex-direction:column;gap:10px;text-align:center}
+.done .tick{width:54px;height:54px;border-radius:50%;background:var(--ok);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto}
+.done a{color:var(--accent-ink);font-weight:600}
+.swap{font-size:13px;color:var(--fg3);text-align:center}
+.swap a{color:var(--accent-ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><b>PEA</b> Pulso da Sala · Módulo II</div>
+
+  <!-- Abertura -->
+  <section id="m-tarefa">
+    <h1>Que tarefa de RH vos consome a semana?</h1>
+    <p class="sub">Anónimo. As respostas aparecem no painel da sessão.</p>
+    <form id="f-tarefa" novalidate>
+      <fieldset><legend>Em que área de RH está?</legend>
+        <div class="chips" id="areas"></div></fieldset>
+      <fieldset><label class="q" for="t-tarefa">A tarefa, numa frase</label>
+        <textarea id="t-tarefa" maxlength="160" placeholder="Ex.: conferir as marcações de ponto e corrigir as anomalias antes do processamento salarial"></textarea></fieldset>
+      <fieldset><label class="q" for="t-horas">Horas por semana</label>
+        <div class="range"><input type="range" id="t-horas" min="1" max="20" step="1" value="4"><output id="o-horas">4 h</output></div></fieldset>
+      <fieldset><legend>Porque ainda é feita à mão?</legend><p class="hint">Escolham uma ou mais.</p>
+        <div class="chips" id="motivos"></div></fieldset>
+      <p class="msg" id="e-tarefa" hidden></p>
+      <button type="submit" id="b-tarefa">Enviar</button>
+    </form>
+  </section>
+
+  <!-- Teste do gémeo -->
+  <section id="m-gemeo" hidden>
+    <h1>Teste do gémeo: as vossas pontuações</h1>
+    <p class="sub">Uma resposta por teste. Se repetirem, enviem outra vez.</p>
+    <form id="f-gemeo" novalidate>
+      <fieldset><legend>Variante</legend><div class="chips" id="vars"></div></fieldset>
+      <div class="two">
+        <fieldset><label class="q" for="g-a">Pontuação CV A</label><input type="number" id="g-a" min="0" max="100" inputmode="numeric" placeholder="0 a 100"></fieldset>
+        <fieldset><label class="q" for="g-b">Pontuação CV B</label><input type="number" id="g-b" min="0" max="100" inputmode="numeric" placeholder="0 a 100"></fieldset>
+      </div>
+      <fieldset><legend>Assistente que usaram</legend><div class="chips" id="ias"></div></fieldset>
+      <fieldset><legend>A recomendação mudou?</legend><div class="chips" id="recs"></div></fieldset>
+      <p class="msg" id="e-gemeo" hidden></p>
+      <button type="submit" id="b-gemeo">Enviar</button>
+    </form>
+  </section>
+
+  <section id="m-ok" class="done" hidden>
+    <div class="tick" aria-hidden="true">✓</div>
+    <h1 style="font-size:22px">Obrigado. Resposta registada.</h1>
+    <p class="sub">Olhem para o ecrã partilhado: os resultados aparecem no painel.</p>
+    <p><a href="#" id="again">Enviar outra resposta</a></p>
+  </section>
+
+  <p class="swap" id="swap"></p>
+</div>
+<script>
+(function(){
+'use strict';
+const q=new URLSearchParams(location.search);
+const S=(q.get('s')||'pea-m2').replace(/[^a-z0-9-]/gi,'').slice(0,30);
+const MODE=q.get('m')==='gemeo'?'gemeo':'tarefa';
+const TOPIC='pea-pulso-rh-x7k2-'+S;
+const AREAS=['Recrutamento e seleção','Administração de pessoal e salários','Ponto, turnos e absentismo','Formação','Desempenho e carreiras','Relações laborais','Comunicação interna','Onboarding','Outra'];
+const MOTIVOS=['Dados espalhados por vários ficheiros','Não temos ferramenta','Exige critério humano','Sempre se fez assim','Regras legais ou de compliance','Falta de tempo para mudar'];
+const VARS=['1 · Género','2 · Idade','3 · Origem','4 · Parentalidade'];
+const IAS=['Copilot','ChatGPT','Gemini','Claude','Outro'];
+const RECS=['Não','Sim'];
+const $=function(id){return document.getElementById(id);};
+function chips(box,name,list,type){list.forEach(function(t,i){const id=name+i;const inp=document.createElement('input');inp.type=type;inp.name=name;inp.id=id;inp.value=t;const l=document.createElement('label');l.htmlFor=id;l.textContent=t;box.appendChild(inp);box.appendChild(l);});}
+chips($('areas'),'area',AREAS,'radio');chips($('motivos'),'motivo',MOTIVOS,'checkbox');
+chips($('vars'),'var',VARS,'radio');chips($('ias'),'ia',IAS,'radio');chips($('recs'),'rec',RECS,'radio');
+$('t-horas').addEventListener('input',function(){$('o-horas').textContent=this.value+' h';});
+const val=function(n){const e=document.querySelector('input[name="'+n+'"]:checked');return e?e.value:'';};
+const vals=function(n){return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value;});};
+function show(m){['m-tarefa','m-gemeo','m-ok'].forEach(function(id){$(id).hidden=id!==m;});}
+show('m-'+MODE);
+$('swap').innerHTML='';const a=document.createElement('a');a.href='?s='+S+(MODE==='gemeo'?'':'&m=gemeo');a.textContent=MODE==='gemeo'?'Ir para a pergunta de abertura':'Ir para o Teste do gémeo';$('swap').appendChild(a);
+function send(data,btn,err){
+  btn.disabled=true;btn.textContent='A enviar…';err.hidden=true;
+  fetch('https://ntfy.sh/'+TOPIC,{method:'POST',body:JSON.stringify(data)})
+   .then(function(r){if(!r.ok)throw new Error(r.status);show('m-ok');})
+   .catch(function(){err.textContent='Não foi possível enviar. Verifiquem a ligação e tentem de novo.';err.hidden=false;})
+   .then(function(){btn.disabled=false;btn.textContent='Enviar';});
+}
+$('f-tarefa').addEventListener('submit',function(e){e.preventDefault();
+  const t=$('t-tarefa').value.trim();const err=$('e-tarefa');
+  if(!val('area')||t.length<4){err.textContent='Escolham a área e escrevam a tarefa.';err.hidden=false;return;}
+  send({k:'tarefa',area:val('area'),tarefa:t.slice(0,160),horas:+$('t-horas').value,motivos:vals('motivo')},$('b-tarefa'),err);});
+$('f-gemeo').addEventListener('submit',function(e){e.preventDefault();
+  const A=parseInt($('g-a').value,10),B=parseInt($('g-b').value,10);const err=$('e-gemeo');
+  if(!val('var')||isNaN(A)||isNaN(B)||A<0||A>100||B<0||B>100){err.textContent='Escolham a variante e indiquem as duas pontuações (0 a 100).';err.hidden=false;return;}
+  send({k:'gemeo',variante:val('var'),a:A,b:B,ia:val('ia')||'Não indicado',rec:val('rec')||'Não indicado'},$('b-gemeo'),err);});
+$('again').addEventListener('click',function(e){e.preventDefault();document.querySelectorAll('form').forEach(function(f){f.reset();});$('o-horas').textContent='4 h';show('m-'+MODE);});
+})();
+</script>
+</body>
+</html>

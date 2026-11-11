@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel · Pulso da Sala · RH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* Painel para projetar: resumo à esquerda, detalhe à direita, atualização automática */
+:root{--bg:#fff;--fg:#1D1F22;--fg2:#55585E;--fg3:#8A8D93;--card:#F6F5F3;--line:#E4E2DE;--accent:#E86B15;--accent-soft:#FCE5D4;--accent-ink:#B4500C;--bar:#3A3C40;--ok:#2E7D4F;--bad:#B3261E;
+  --sans:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans)}
+body{padding:22px 28px 30px}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:6px;background:var(--accent)}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.eyebrow{margin:0;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+h1{margin:4px 0 0;font-size:clamp(24px,2.6vw,42px);line-height:1.12;max-width:26ch;text-wrap:balance}
+.tabs{display:flex;gap:6px;margin-top:14px}
+.tabs a{text-decoration:none;color:var(--fg2);font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid var(--line)}
+.tabs a[aria-current]{background:var(--accent);border-color:var(--accent);color:#fff}
+.qr{display:flex;gap:14px;align-items:center;background:var(--card);border-radius:14px;padding:12px 16px}
+.qr #qrc{background:#fff;padding:6px;border-radius:8px;line-height:0}
+.qr p{margin:0;font-size:13px;color:var(--fg2);max-width:18ch}
+.qr b{display:block;font-size:15px;color:var(--fg)}
+main{display:grid;grid-template-columns:minmax(260px,1fr) 2.2fr;gap:24px;margin-top:22px}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+.kpis{display:flex;flex-direction:column;gap:12px}
+.kpi{background:var(--card);border-radius:14px;padding:16px 18px}
+.kpi .n{font-size:clamp(34px,3.6vw,60px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--fg2);margin-top:6px}
+.kpi.hl{background:var(--accent-soft)}.kpi.hl .n{color:var(--accent-ink)}
+.panel{display:flex;flex-direction:column;gap:20px;min-width:0}
+h2{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(150px,30%) 1fr 92px;gap:12px;align-items:center;font-size:14px}
+.bar .t{height:22px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--bar);border-radius:5px;transition:width .6s}
+.bar.top .t i{background:var(--accent)}
+.bar .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.bar .v small{font-weight:500;color:var(--fg3)}
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.item{background:var(--card);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;animation:in .5s}
+@keyframes in{from{opacity:.2;transform:translateY(6px)}to{opacity:1;transform:none}}
+.item .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink)}
+.item p{margin:0;font-size:14.5px;line-height:1.45}
+.item .h{font-size:12.5px;color:var(--fg3)}
+table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:12px 10px;border-bottom:1px solid var(--line)}
+td.d{font-weight:800}td.d.pos{color:var(--bad)}td.d.zero{color:var(--ok)}
+.empty{color:var(--fg3);font-size:15px;background:var(--card);border-radius:12px;padding:22px}
+.status{font-size:12px;color:var(--fg3);margin-top:16px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <p class="eyebrow">Pulso da Sala · PG IA para a Gestão de RH · Módulo II</p>
+    <h1 id="title">Que tarefa de RH vos consome a semana?</h1>
+    <nav class="tabs"><a href="#" data-m="tarefa">Abertura</a><a href="#" data-m="gemeo">Teste do gémeo</a></nav>
+  </div>
+  <div class="qr"><div id="qrc"></div><p><b>Respondam aqui</b>Anónimo · leva 1 minuto</p></div>
+</header>
+
+<main id="v-tarefa">
+  <div class="kpis">
+    <div class="kpi"><div class="n" id="k-n">0</div><div class="l">respostas</div></div>
+    <div class="kpi hl"><div class="n" id="k-h">0 h</div><div class="l">por semana em tarefas manuais, somando a sala</div></div>
+    <div class="kpi"><div class="n" id="k-y">0</div><div class="l">dias de trabalho por ano (8 h), à mesma escala</div></div>
+  </div>
+  <div class="panel">
+    <section><h2>Horas por semana, por área de RH</h2><div class="bars" id="b-area"></div></section>
+    <section><h2>Porque ainda é feito à mão</h2><div class="bars" id="b-mot"></div></section>
+    <section><h2>As tarefas da sala</h2><div class="feed" id="feed"></div></section>
+  </div>
+</main>
+
+<main id="v-gemeo" hidden>
+  <div class="kpis">
+    <div class="kpi"><div class="n" id="g-n">0</div><div class="l">testes registados</div></div>
+    <div class="kpi hl"><div class="n" id="g-d">0</div><div class="l">testes com pontuações diferentes entre A e B</div></div>
+    <div class="kpi"><div class="n" id="g-r">0</div><div class="l">em que a recomendação mudou</div></div>
+  </div>
+  <div class="panel">
+    <section><h2>Resultados por variante</h2><div id="g-tab"></div></section>
+    <section><h2>Por assistente</h2><div class="bars" id="g-ia"></div></section>
+  </div>
+</main>
+<p class="status" id="status">A ligar…</p>
+
+<script>
+(function(){
+'use strict';
+const q=new URLSearchParams(location.search);
+const S=(q.get('s')||'pea-m2').replace(/[^a-z0-9-]/gi,'').slice(0,30);
+let MODE=q.get('m')==='gemeo'?'gemeo':'tarefa';
+const TOPIC='pea-pulso-rh-x7k2-'+S;
+const $=function(id){return document.getElementById(id);};
+const el=function(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const base=location.href.replace(/painel\.html.*$/,'pulso.html');
+let qr=null;
+function setQR(){const url=base+'?s='+S+(MODE==='gemeo'?'&m=gemeo':'');$('qrc').textContent='';
+  if(window.QRCode){qr=new QRCode($('qrc'),{text:url,width:132,height:132,correctLevel:QRCode.CorrectLevel.M});}
+  else $('qrc').appendChild(el('span',null,url));}
+function setMode(m){MODE=m;$('v-tarefa').hidden=m!=='tarefa';$('v-gemeo').hidden=m!=='gemeo';
+  $('title').textContent=m==='gemeo'?'Teste do gémeo: a IA pontuou igual os dois CVs?':'Que tarefa de RH vos consome a semana?';
+  document.querySelectorAll('.tabs a').forEach(function(a){if(a.dataset.m===m)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});setQR();render();}
+document.querySelectorAll('.tabs a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();setMode(a.dataset.m);});});
+let DATA=[];
+function bars(box,rows,unit){box.textContent='';if(!rows.length){box.appendChild(el('div','empty','Ainda sem respostas.'));return;}
+  const max=Math.max.apply(null,rows.map(function(r){return r[1];}))||1;
+  rows.forEach(function(r,i){const b=el('div','bar'+(i===0?' top':''));b.appendChild(el('span',null,r[0]));const t=el('div','t');const f=el('i');f.style.width=(r[1]/max*100)+'%';t.appendChild(f);b.appendChild(t);
+    const v=el('span','v',String(r[1])+(unit||''));if(r[2]!=null){v.appendChild(el('small',null,' · '+r[2]));}b.appendChild(v);box.appendChild(b);});}
+function render(){
+  const T=DATA.filter(function(d){return d.k==='tarefa';}),G=DATA.filter(function(d){return d.k==='gemeo';});
+  if(MODE==='tarefa'){
+    const h=T.reduce(function(s,d){return s+(+d.horas||0);},0);
+    $('k-n').textContent=T.length;$('k-h').textContent=h+' h';$('k-y').textContent=Math.round(h*46/8);
+    const A={};T.forEach(function(d){A[d.area]=A[d.area]||[0,0];A[d.area][0]+=+d.horas||0;A[d.area][1]++;});
+    bars($('b-area'),Object.keys(A).map(function(k){return [k,A[k][0],A[k][1]+(A[k][1]===1?' resposta':' respostas')];}).sort(function(a,b){return b[1]-a[1];}),' h');
+    const M={};T.forEach(function(d){(d.motivos||[]).forEach(function(m){M[m]=(M[m]||0)+1;});});
+    bars($('b-mot'),Object.keys(M).map(function(k){return [k,M[k]];}).sort(function(a,b){return b[1]-a[1];}),'');
+    const f=$('feed');f.textContent='';if(!T.length)f.appendChild(el('div','empty','As respostas aparecem aqui à medida que chegam.'));
+    T.slice().reverse().forEach(function(d){const it=el('div','item');it.appendChild(el('span','tag',d.area));it.appendChild(el('p',null,d.tarefa));it.appendChild(el('span','h',(d.horas||0)+' h por semana'));f.appendChild(it);});
+  }else{
+    $('g-n').textContent=G.length;$('g-d').textContent=G.filter(function(d){return d.a!==d.b;}).length;$('g-r').textContent=G.filter(function(d){return d.rec==='Sim';}).length;
+    const V={};G.forEach(function(d){V[d.variante]=V[d.variante]||[];V[d.variante].push(d);});
+    const box=$('g-tab');box.textContent='';
+    if(!G.length){box.appendChild(el('div','empty','Ainda sem testes registados.'));}
+    else{const t=el('table');const hr=el('tr');['Variante','Testes','Média CV A','Média CV B','Diferença média (B − A)'].forEach(function(x){hr.appendChild(el('th',null,x));});t.appendChild(hr);
+      Object.keys(V).sort().forEach(function(k){const L=V[k];const ma=L.reduce(function(s,d){return s+d.a;},0)/L.length,mb=L.reduce(function(s,d){return s+d.b;},0)/L.length;const dd=mb-ma;
+        const tr=el('tr');[k,String(L.length),ma.toFixed(1),mb.toFixed(1)].forEach(function(x){tr.appendChild(el('td',null,x));});
+        const td=el('td','d '+(Math.abs(dd)<0.05?'zero':'pos'),(dd>0?'+':'')+dd.toFixed(1));tr.appendChild(td);t.appendChild(tr);});
+      box.appendChild(t);}
+    const I={};G.forEach(function(d){const x=I[d.ia]=I[d.ia]||[0,0];x[0]++;if(d.a!==d.b)x[1]++;});
+    bars($('g-ia'),Object.keys(I).map(function(k){return [k,I[k][0],I[k][1]+' com diferença'];}).sort(function(a,b){return b[1]-a[1];}),' testes');
+  }
+}
+function poll(){
+  fetch('https://ntfy.sh/'+TOPIC+'/json?poll=1&since=all',{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();})
+   .then(function(txt){const out=[];txt.split('\n').forEach(function(l){if(!l.trim())return;try{const m=JSON.parse(l);if(m.event==='message'){const d=JSON.parse(m.message);if(d&&d.k)out.push(d);}}catch(e){}});
+     DATA=out;render();$('status').textContent='Atualizado às '+new Date().toLocaleTimeString('pt-PT')+' · sessão '+S+' · atualiza sozinho a cada 6 segundos';})
+   .catch(function(){$('status').textContent='Sem ligação ao serviço de respostas. Nova tentativa dentro de 6 segundos.';});
+}
+setMode(MODE);poll();setInterval(poll,6000);
+})();
+</script>
+</body>
+</html>
