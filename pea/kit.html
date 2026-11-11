@@ -157,7 +157,7 @@ footer{margin-top:36px;font-size:12px;color:var(--fg3)}
   <div class="grid2" id="canvasGrid"></div>
   <div class="box hl">
     <div class="row"><h3>Entrega até 18 nov. 2026, às 18:00</h3><span class="btns"><button type="button" class="ghost" id="cvCopy">Copiar</button><button type="button" class="ghost" id="cvPdf">Descarregar PDF</button><button type="button" id="cvMail">Enviar por e-mail</button></span></div>
-    <p class="hint">Este é o Canvas que conta para a avaliação. Podem continuar a melhorá-lo até à entrega: fica guardado neste browser. Usem «Descarregar PDF» (na janela de impressão, escolham «Guardar como PDF») e enviem o PDF para luisalmeidapt@gmail.com, com os prompts que usaram para o criticar ou melhorar e duas linhas sobre o que mudou.</p>
+    <p class="hint">Este é o Canvas que conta para a avaliação. Podem continuar a melhorá-lo até à entrega: fica guardado neste browser. «Enviar por e-mail» manda o Canvas diretamente ao professor. Para a entrega final, usem também «Descarregar PDF» (na janela de impressão, escolham «Guardar como PDF») e enviem o PDF para luisalmeidapt@gmail.com, com os prompts que usaram e duas linhas sobre o que mudou.</p>
     <div class="field"><label for="cv-ia">Prompts usados e o que mudou</label><textarea id="cv-ia" placeholder="Colem aqui o prompt do CFO cético (ou outro) e escrevam duas linhas sobre o que alteraram no Canvas."></textarea></div>
     <span class="saved" id="cvInfo"></span>
   </div>
@@ -231,7 +231,17 @@ function promptBox(title,txt,extra){
 $('f1').href=PULSO+'?s=teste';$('f2').href=PULSO+'?s=teste&m=gemeo';$('f2b').href=PULSO+'?s=teste&m=gemeo';
 const nome=$('nome');nome.value=load('nome','');nome.addEventListener('input',function(){save('nome',nome.value);});
 const EMAIL='luisalmeidapt@gmail.com';
-function mail(subject,body){location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);}
+function mailto(subject,body){location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);}
+function mail(subject,body,btn){
+  if(!(nome.value||'').trim()){alert2(btn,'Escrevam o vosso nome no topo do Kit');nome.focus();return;}
+  const o=btn.textContent;btn.disabled=true;btn.textContent='A enviar…';
+  fetch('https://formsubmit.co/ajax/'+EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({_subject:subject,_template:'box',_captcha:'false',Nome:nome.value,Conteudo:body})})
+   .then(function(r){return r.json();})
+   .then(function(j){if(!(j&&(j.success===true||j.success==='true')))throw new Error('x');btn.textContent='Enviado ✓';btn.classList.add('done');setTimeout(function(){btn.textContent=o;btn.classList.remove('done');btn.disabled=false;},3000);})
+   .catch(function(){btn.textContent=o;btn.disabled=false;mailto(subject,body);});
+}
+function alert2(btn,msg){const o=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=o;},2500);}
 /* Auditoria */
 const aud=load('aud',[{t:'',h:'',d:''},{t:'',h:'',d:''},{t:'',h:'',d:''},{t:'',h:'',d:''},{t:'',h:'',d:''}]);
 function audInfo(){let best=null;aud.forEach(function(r){const h=parseFloat(String(r.h).replace(',','.'))||0;if(r.t&&(r.d==='A'||r.d==='B')&&(!best||h>best.h))best={t:r.t,h:h};});
@@ -245,7 +255,7 @@ aud.forEach(function(r,i){const tr=el('tr');
 audInfo();
 function audText(){return 'Auditoria da semana · '+(nome.value||'')+'\n'+aud.filter(function(r){return r.t;}).map(function(r){return '- '+r.t+' · '+(r.h||'?')+' h/semana · '+(r.d||'?');}).join('\n');}
 $('audCopy').addEventListener('click',function(){copy($('audCopy'),audText());});
-$('audMail').addEventListener('click',function(){mail('Módulo II · Exercício 1 · Auditoria · '+(nome.value||''),audText());});
+$('audMail').addEventListener('click',function(){mail('Módulo II · Exercício 1 · Auditoria · '+(nome.value||''),audText(),$('audMail'));});
 /* Teste do gémeo */
 let vsel=load('var',1);
 function renderVar(){const v=VARS[vsel-1];$('vars').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.n===vsel));});
@@ -275,7 +285,7 @@ CANVAS.forEach(function(c,i){const f=el('div','box field');const l=el('label');l
 const cvia=$('cv-ia');cvia.value=cv.ia||'';cvia.addEventListener('input',function(){cv.ia=cvia.value;tick();});
 function cvText(){return 'AI Canvas · '+(cv.nome||'')+'\nAutor: '+(nome.value||'')+'\n\n'+CANVAS.map(function(c,i){return (i+1)+'. '+c[0]+'\n'+(cv[i+1]||'')+'\n';}).join('\n')+'\nPrompts usados e o que mudou\n'+(cv.ia||'');}
 $('cvCopy').addEventListener('click',function(){copy($('cvCopy'),cvText());});
-$('cvMail').addEventListener('click',function(){mail('Módulo II · AI Canvas · '+(nome.value||''),cvText()+'\n\n(Anexem também o PDF.)');});
+$('cvMail').addEventListener('click',function(){mail('Módulo II · AI Canvas · '+(nome.value||''),cvText(),$('cvMail'));});
 $('cvPdf').addEventListener('click',function(){const p=$('printable');p.textContent='';
   p.appendChild(el('p','eyebrow','PG em IA para a Gestão de RH · Módulo II · AI Canvas'));p.appendChild(el('h1',null,cv.nome||'AI Canvas'));p.appendChild(el('p','lead',nome.value||''));
   const g=el('div','pgrid');CANVAS.forEach(function(c,i){const b=el('div','pcell');b.appendChild(el('h3',null,(i+1)+' · '+c[0]));b.appendChild(el('p',null,cv[i+1]||''));g.appendChild(b);});p.appendChild(g);
