@@ -135,6 +135,7 @@ footer{margin-top:36px;font-size:12px;color:var(--fg3)}
   <div class="vars" role="group" aria-label="Variante" id="vars"></div>
   <p class="hint" id="varInfo"></p>
   <div class="grid2" id="cvs"></div>
+  <div class="box hl"><div class="row"><h3>3 · Registar as pontuações</h3><a class="btn" id="f2b" target="_blank" rel="noopener" style="text-decoration:none;background:var(--accent);color:#fff;font-weight:600;padding:10px 16px;border-radius:8px">Registar no Pulso</a></div><p class="hint">Abre o formulário numa nova aba: a vossa variante, a pontuação do CV A, a do CV B, o assistente e se a recomendação mudou.</p></div>
 </section>
 
 <section id="v-padre" hidden>
@@ -227,7 +228,7 @@ function promptBox(title,txt,extra){
  bt.addEventListener('click',function(){copy(bt,txt,pre);});return b;
 }
 /* Pulso */
-$('f1').href=PULSO+'?s=teste';$('f2').href=PULSO+'?s=teste&m=gemeo';
+$('f1').href=PULSO+'?s=teste';$('f2').href=PULSO+'?s=teste&m=gemeo';$('f2b').href=PULSO+'?s=teste&m=gemeo';
 const nome=$('nome');nome.value=load('nome','');nome.addEventListener('input',function(){save('nome',nome.value);});
 const EMAIL='luisalmeidapt@gmail.com';
 function mail(subject,body){location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);}
