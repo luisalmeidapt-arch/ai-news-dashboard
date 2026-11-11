@@ -275,8 +275,9 @@ const pf=el('div','field');const pl=el('label',null,'Processo que estão a audit
 pi.addEventListener('input',function(){pv.proc=pi.value;save('padre',pv);});
 PADRE.forEach(function(p){const f=el('div','field');const l=el('label');l.htmlFor='padre-'+p[0];const n=el('span','num new',p[0]);l.appendChild(n);l.appendChild(document.createTextNode(p[1]+' · '+p[2]));
  const t=el('textarea');t.id='padre-'+p[0];t.placeholder='Resposta e uma ação concreta. Marquem se hoje não cumprem.';t.value=pv[p[0]]||'';t.addEventListener('input',function(){pv[p[0]]=t.value;save('padre',pv);});f.appendChild(l);f.appendChild(t);pb.appendChild(f);});
-const pb2=el('div','row');const pc=el('button',null,'Copiar a grelha');pc.type='button';pb2.appendChild(el('span','saved','Entra no bloco 8 do vosso Canvas.'));pb2.appendChild(pc);pb.appendChild(pb2);
-pc.addEventListener('click',function(){copy(pc,'PADRE · '+(pv.proc||'')+'\n'+PADRE.map(function(p){return p[0]+' · '+p[1]+': '+(pv[p[0]]||'');}).join('\n'));});
+const pb2=el('div','row');const pc=el('button','ghost','Copiar a grelha');pc.type='button';const pm=el('button',null,'Enviar por e-mail');pm.type='button';pm.id='padreMail';const pbs=el('span','btns');pbs.appendChild(pc);pbs.appendChild(pm);pb2.appendChild(el('span','saved','Entra no bloco 8 do vosso Canvas.'));pb2.appendChild(pbs);pb.appendChild(pb2);
+function padreText(){return 'PADRE · '+(pv.proc||'')+'\n'+PADRE.map(function(p){return p[0]+' · '+p[1]+': '+(pv[p[0]]||'');}).join('\n');}
+pc.addEventListener('click',function(){copy(pc,padreText());});
 marked($('pNota'),P_NOTA);document.querySelector('[data-copy="P_NOTA"]').addEventListener('click',function(e){copy(e.currentTarget,P_NOTA,$('pNota'));});
 /* Canvas */
 const cv=load('canvas',{});const nm=$('cv-nome');nm.value=cv.nome||'';
@@ -296,6 +297,7 @@ $('cvPdf').addEventListener('click',function(){const p=$('printable');p.textCont
   try{window.print();}catch(e){}});
 /* Prompts */
 PROMPTS.forEach(function(p){$('promptList').appendChild(promptBox(p.t,p.x));});
+$('padreMail').addEventListener('click',function(){mail('Módulo II · Exercício 3 · PADRE · '+(nome.value||''),padreText(),$('padreMail'));});
 /* Separadores */
 const TABS=['pulso','auditoria','gemeo','padre','canvas','prompts'];
 function route(){let h=(location.hash||'').replace('#','');if(TABS.indexOf(h)<0)h='pulso';
