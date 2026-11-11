@@ -235,14 +235,15 @@ function mailto(subject,body){location.href='mailto:'+EMAIL+'?subject='+encodeUR
 function mail(subject,body,btn){
   if(!(nome.value||'').trim()){alert2(btn,'Escrevam o vosso nome no topo do Kit');nome.focus();return;}
   const o=btn.textContent;btn.disabled=true;btn.textContent='A enviar…';
-  const ctl=('AbortController' in window)?new AbortController():null;const to=setTimeout(function(){if(ctl)ctl.abort();},10000);
+  const ctl=('AbortController' in window)?new AbortController():null;const to=setTimeout(function(){if(ctl)ctl.abort();},40000);
   fetch('https://formsubmit.co/ajax/'+EMAIL,{method:'POST',signal:ctl?ctl.signal:undefined,headers:{'Content-Type':'application/json','Accept':'application/json'},
     body:JSON.stringify({_subject:subject,_template:'box',_captcha:'false',Nome:nome.value,Conteudo:body})})
    .then(function(r){return r.json();})
-   .then(function(j){if(!(j&&(j.success===true||j.success==='true')))throw new Error('x');btn.textContent='Enviado ✓';btn.classList.add('done');setTimeout(function(){btn.textContent=o;btn.classList.remove('done');btn.disabled=false;},3000);})
-   .catch(function(){btn.textContent=o;btn.disabled=false;mailto(subject,body);})
+   .then(function(j){if(!(j&&(j.success===true||j.success==='true'))){showMsg(btn,'Resposta do serviço: '+((j&&j.message)||'sem detalhe'));throw new Error('x');}btn.textContent='Enviado ✓';btn.classList.add('done');setTimeout(function(){btn.textContent=o;btn.classList.remove('done');btn.disabled=false;},3000);})
+   .catch(function(err){btn.textContent=o;btn.disabled=false;if(err&&err.name==='AbortError')showMsg(btn,'O serviço não respondeu em 40 segundos.');else if(err&&err.message!=='x')showMsg(btn,'Erro de ligação: '+err.message);setTimeout(function(){mailto(subject,body);},4000);})
    .then(function(){clearTimeout(to);});
 }
+function showMsg(btn,msg){let p=btn.parentNode.parentNode.querySelector('.sendmsg');if(!p){p=el('p','hint sendmsg');btn.parentNode.parentNode.appendChild(p);}p.textContent=msg+' A abrir o vosso e-mail como alternativa…';}
 function alert2(btn,msg){const o=btn.textContent;btn.textContent=msg;setTimeout(function(){btn.textContent=o;},2500);}
 /* Auditoria */
 const aud=load('aud',[{t:'',h:'',d:''},{t:'',h:'',d:''},{t:'',h:'',d:''},{t:'',h:'',d:''},{t:'',h:'',d:''}]);
