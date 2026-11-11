@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Auditoria da Semana · Turma PG RH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Painel de leitura: resumo em números, padrões, gráfico filtrável, detalhe. Marca PEA. */
+:root{--bg:#fff;--fg:#1D1F22;--fg2:#55585E;--fg3:#8A8D93;--card:#F6F5F3;--line:#E4E2DE;--accent:#E86B15;--accent-soft:#FCE5D4;--accent-ink:#B4500C;
+ --cA:#E86B15;--cB:#3A3C40;--cC:#B9B6AF;--sans:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#1D1F22;--fg:#F2F1EE;--fg2:#BDBBB6;--fg3:#8C8B87;--card:#27292D;--line:#3A3C40;--accent:#F28A45;--accent-soft:#4A2814;--accent-ink:#F7B184;--cA:#F28A45;--cB:#D8D5CE;--cC:#6A6862;color-scheme:dark}}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 var(--sans);padding:0 max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:5px;background:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:30px;padding-top:26px}
+.eyebrow{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+h1{margin:6px 0 6px;font-size:clamp(26px,3.4vw,42px);line-height:1.12;text-wrap:balance}
+.lead{margin:0;color:var(--fg2);max-width:70ch}
+h2{margin:0 0 12px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.kpi{background:var(--card);border-radius:14px;padding:16px 18px}
+.kpi .n{font-size:clamp(30px,3.4vw,46px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--fg2);margin-top:6px}
+.kpi.hl{background:var(--accent-soft)}.kpi.hl .n{color:var(--accent-ink)}
+.ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.in{border-top:3px solid var(--accent);padding:12px 2px 0;display:flex;flex-direction:column;gap:6px}
+.in b{font-size:16px;line-height:1.3}.in p{margin:0;color:var(--fg2);font-size:14px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.legend button{display:flex;align-items:center;gap:7px;font:600 13px var(--sans);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.legend button[aria-pressed="false"]{opacity:.4}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(150px,26%) 1fr 70px;gap:12px;align-items:center;font-size:14px;cursor:pointer;border-radius:8px;padding:3px 4px;background:transparent;border:0;color:inherit;font-family:inherit;text-align:left}
+.bar:hover,.bar[aria-pressed="true"]{background:var(--card)}
+.track{display:flex;height:22px;border-radius:5px;overflow:hidden;background:var(--line)}
+.track i{display:block;height:100%}
+.v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.v small{display:block;font-weight:500;font-size:11.5px;color:var(--fg3)}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.h{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.pill{display:inline-block;min-width:24px;text-align:center;font-size:12px;font-weight:700;border-radius:5px;padding:2px 7px;color:#fff}
+.pA{background:var(--cA)}.pB{background:var(--cB);color:var(--bg)}.pC{background:var(--cC);color:var(--fg)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}@media(max-width:860px){.two{grid-template-columns:1fr}}
+.filt{font-size:13px;color:var(--fg2);margin:0 0 8px}.filt button{font:600 12px var(--sans);color:var(--accent-ink);background:none;border:0;cursor:pointer;text-decoration:underline}
+.ask{background:var(--accent-soft);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.ask ol{margin:0;padding-left:1.2em}
+footer{font-size:12px;color:var(--fg3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="eyebrow">PG em IA para a Gestão de RH · Módulo II · Exercício 1</p>
+  <h1>A auditoria da semana da turma</h1>
+  <p class="lead">As tarefas que registaram no Kit, juntas e sem nomes. A = automatizar, B = aumentar (a IA prepara, a pessoa decide), C = manter humano.</p>
+</header>
+
+<section class="kpis" id="kpis"></section>
+
+<section><h2>Quatro padrões</h2><div class="ins" id="ins"></div></section>
+
+<section>
+  <h2>Horas por semana, por área de RH</h2>
+  <div class="legend" id="legend"></div>
+  <div class="bars" id="bars"></div>
+</section>
+
+<section class="two">
+  <div><h2>Mesma tarefa, decisões diferentes</h2><div class="tbl"><table id="same"></table></div></div>
+  <div><h2 id="listTitle">As tarefas com mais horas</h2><p class="filt" id="filt"></p><div class="tbl"><table id="top"></table></div></div>
+</section>
+
+<section class="ask">
+  <h2 style="margin:0;color:var(--accent-ink)">Para discutir</h2>
+  <ol>
+    <li>Porque é que a mesma tarefa recebeu decisões diferentes? Que critério usaram?</li>
+    <li>E-mail e reuniões quase nunca aparecem num plano de IA para RH. Deviam?</li>
+    <li>Qual destas tarefas daria o AI Canvas com mais impacto na vossa empresa?</li>
+  </ol>
+</section>
+
+<footer>17 participantes · dados das auditorias enviadas pelo Kit a 11 nov. 2026 · as áreas foram agrupadas pelo docente.</footer>
+</div>
+<script>
+const T=[{"p": 1, "t": "Receber candidaturas e enviar questionário de pré-seleção", "h": 1, "d": "A", "a": "Recrutamento e seleção"}, {"p": 1, "t": "Acompanhar gestoras em situações individuais de colaboradores", "h": 3, "d": "C", "a": "Gestão e relação com pessoas"}, {"p": 1, "t": "Conferir assiduidade: picagens, ausências e horas noturnas", "h": 5, "d": "B", "a": "Ponto e assiduidade"}, {"p": 1, "t": "Analisar propostas de benefícios e recomendar à gerência", "h": 3, "d": "B", "a": "Compensação e benefícios"}, {"p": 1, "t": "Comunicações internas sobre procedimentos de RH", "h": 2, "d": "B", "a": "Comunicação e employer branding"}, {"p": 2, "t": "Agendar entrevistas", "h": 1, "d": "B", "a": "Recrutamento e seleção"}, {"p": 2, "t": "Criar guiões de entrevista", "h": 2, "d": "B", "a": "Recrutamento e seleção"}, {"p": 2, "t": "Análise de candidatos", "h": 2, "d": "A", "a": "Recrutamento e seleção"}, {"p": 2, "t": "Entrevistas", "h": 10, "d": "C", "a": "Recrutamento e seleção"}, {"p": 3, "t": "Triagem de CVs e base de candidatos em Excel", "h": 6, "d": "B", "a": "Recrutamento e seleção"}, {"p": 3, "t": "Preparar contratos de trabalho", "h": 5, "d": "A", "a": "Administração e documentos"}, {"p": 3, "t": "Conteúdos para Instagram e LinkedIn", "h": 3, "d": "A", "a": "Comunicação e employer branding"}, {"p": 3, "t": "Organizar ficheiros", "h": 3, "d": "A", "a": "Administração e documentos"}, {"p": 3, "t": "Payroll", "h": 4, "d": "A", "a": "Administração e documentos"}, {"p": 4, "t": "Acompanhar o plano de atividades das áreas", "h": 12, "d": "C", "a": "Reuniões e coordenação"}, {"p": 4, "t": "Analisar KPIs e elaborar planos de ação", "h": 4, "d": "B", "a": "Relatórios, KPIs e dados"}, {"p": 4, "t": "Responder a solicitações internas", "h": 16, "d": "B", "a": "E-mail e pedidos internos"}, {"p": 5, "t": "Marcar entrevistas e contratos", "h": 1, "d": "A", "a": "Recrutamento e seleção"}, {"p": 5, "t": "Relatórios e declarações", "h": 2, "d": "B", "a": "Administração e documentos"}, {"p": 5, "t": "Analisar e responder a e-mails", "h": 3, "d": "B", "a": "E-mail e pedidos internos"}, {"p": 5, "t": "Processo de avaliação de desempenho", "h": 5, "d": "B", "a": "Desempenho e desenvolvimento"}, {"p": 5, "t": "Contacto com coordenadores e funcionários", "h": 4, "d": "C", "a": "Gestão e relação com pessoas"}, {"p": 6, "t": "Reuniões com diretores e sócios", "h": 5, "d": "B", "a": "Reuniões e coordenação"}, {"p": 6, "t": "Entrevistas", "h": 10, "d": "B", "a": "Recrutamento e seleção"}, {"p": 6, "t": "Triagem curricular", "h": 6, "d": "A", "a": "Recrutamento e seleção"}, {"p": 7, "t": "Criar turmas de formação", "h": 2.5, "d": "B", "a": "Formação"}, {"p": 7, "t": "Fecho de ações: horas, ajudas de custo, contabilização", "h": 25, "d": "B", "a": "Formação"}, {"p": 7, "t": "Envio de convocatórias", "h": 2, "d": "B", "a": "Formação"}, {"p": 8, "t": "Análise de KPIs", "h": 8, "d": "A", "a": "Relatórios, KPIs e dados"}, {"p": 8, "t": "People Analytics", "h": 10, "d": "B", "a": "Relatórios, KPIs e dados"}, {"p": 8, "t": "Relatórios para o Board", "h": 4, "d": "B", "a": "Relatórios, KPIs e dados"}, {"p": 8, "t": "Reuniões de prioridades com outras áreas", "h": 10, "d": "C", "a": "Reuniões e coordenação"}, {"p": 8, "t": "Gestão de pessoas", "h": 8, "d": "C", "a": "Gestão e relação com pessoas"}, {"p": 9, "t": "Resposta a e-mails", "h": 16, "d": "A", "a": "E-mail e pedidos internos"}, {"p": 9, "t": "Partilha e tratamento de dados", "h": 8, "d": "A", "a": "Relatórios, KPIs e dados"}, {"p": 9, "t": "Reuniões com realização de atas", "h": 16, "d": "B", "a": "Reuniões e coordenação"}, {"p": 10, "t": "Sourcing", "h": 8, "d": "B", "a": "Recrutamento e seleção"}, {"p": 10, "t": "Registos de atividade", "h": 6, "d": "A", "a": "Administração e documentos"}, {"p": 10, "t": "Triagem de CVs", "h": 6, "d": "A", "a": "Recrutamento e seleção"}, {"p": 10, "t": "Reports", "h": 6, "d": "B", "a": "Relatórios, KPIs e dados"}, {"p": 10, "t": "Gestão documental", "h": 4, "d": "A", "a": "Administração e documentos"}, {"p": 11, "t": "Triagem de candidatos para entrevista", "h": 2, "d": "B", "a": "Recrutamento e seleção"}, {"p": 11, "t": "Registar formação", "h": 4, "d": "A", "a": "Formação"}, {"p": 11, "t": "Medicina no trabalho", "h": 1, "d": "A", "a": "Administração e documentos"}, {"p": 11, "t": "Acolhimento e integração", "h": 1, "d": "C", "a": "Onboarding"}, {"p": 11, "t": "Eventos e iniciativas", "h": 2, "d": "C", "a": "Comunicação e employer branding"}, {"p": 12, "t": "Avaliação e feedback 1-2-1", "h": 5, "d": "C", "a": "Desempenho e desenvolvimento"}, {"p": 12, "t": "Formação", "h": 3, "d": "B", "a": "Formação"}, {"p": 12, "t": "Entrevistas", "h": 2, "d": "C", "a": "Recrutamento e seleção"}, {"p": 13, "t": "Marcar entrevistas", "h": 10, "d": "B", "a": "Recrutamento e seleção"}, {"p": 13, "t": "Relatórios para a Administração", "h": 5, "d": "A", "a": "Relatórios, KPIs e dados"}, {"p": 13, "t": "Avaliar candidaturas", "h": 20, "d": "B", "a": "Recrutamento e seleção"}, {"p": 13, "t": "Entrevistas", "h": 10, "d": "C", "a": "Recrutamento e seleção"}, {"p": 14, "t": "Processos disciplinares", "h": 8, "d": "C", "a": "Relações laborais e jurídico"}, {"p": 14, "t": "Problemas operacionais", "h": 16, "d": "A", "a": "Gestão e relação com pessoas"}, {"p": 14, "t": "Problemas legais", "h": 4, "d": "A", "a": "Relações laborais e jurídico"}, {"p": 14, "t": "Relações laborais", "h": 8, "d": "A", "a": "Relações laborais e jurídico"}, {"p": 14, "t": "Verificar e controlar dados", "h": 4, "d": "B", "a": "Relatórios, KPIs e dados"}, {"p": 15, "t": "Reuniões com managers", "h": 20, "d": "B", "a": "Reuniões e coordenação"}, {"p": 15, "t": "Análise de funções e posicionamento salarial", "h": 5, "d": "B", "a": "Compensação e benefícios"}, {"p": 15, "t": "Pareceres legais: despedimentos, acordos, reorganizações", "h": 8, "d": "B", "a": "Relações laborais e jurídico"}, {"p": 15, "t": "Registos, trabalho administrativo e qualidade de dados", "h": 8, "d": "A", "a": "Administração e documentos"}, {"p": 15, "t": "Relacionamento com colaboradores", "h": 5, "d": "C", "a": "Gestão e relação com pessoas"}, {"p": 16, "t": "Revisão de CVs", "h": 2, "d": "B", "a": "Recrutamento e seleção"}, {"p": 16, "t": "Entrevistas", "h": 2, "d": "C", "a": "Recrutamento e seleção"}, {"p": 16, "t": "Mentoria", "h": 3, "d": "C", "a": "Desempenho e desenvolvimento"}, {"p": 16, "t": "Gestão de ausências", "h": 2, "d": "A", "a": "Ponto e assiduidade"}, {"p": 16, "t": "Formação", "h": 6, "d": "B", "a": "Formação"}, {"p": 17, "t": "Screening de CVs", "h": 7, "d": "B", "a": "Recrutamento e seleção"}, {"p": 17, "t": "Marcar entrevistas", "h": 3, "d": "A", "a": "Recrutamento e seleção"}, {"p": 17, "t": "Entrevistas", "h": 10, "d": "C", "a": "Recrutamento e seleção"}, {"p": 17, "t": "Onboarding: documentos", "h": 10, "d": "B", "a": "Onboarding"}, {"p": 17, "t": "Enviar resultados de entrevistas", "h": 3, "d": "A", "a": "Recrutamento e seleção"}];
+const L={A:'Automatizar',B:'Aumentar',C:'Manter humano'};
+const on={A:true,B:true,C:true};let area=null;
+const $=id=>document.getElementById(id);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const sum=a=>a.reduce((s,x)=>s+x.h,0);
+const fmt=n=>(Math.round(n*10)/10).toLocaleString('pt-PT');
+const tot=sum(T),hA=sum(T.filter(x=>x.d==='A')),hB=sum(T.filter(x=>x.d==='B')),hC=sum(T.filter(x=>x.d==='C'));
+const people=new Set(T.map(x=>x.p)).size;
+[[people,'participantes'],[T.length,'tarefas registadas'],[fmt(tot)+' h','por semana, somando a turma'],[Math.round((hA+hB)/tot*100)+'%','das horas são candidatas a IA (A ou B)',1]].forEach(k=>{const d=el('div','kpi'+(k[2]?' hl':''));d.appendChild(el('div','n',String(k[0])));d.appendChild(el('div','l',k[1]));$('kpis').appendChild(d);});
+// padrões
+const byArea={};T.forEach(x=>{const a=byArea[x.a]=byArea[x.a]||{h:0,n:0,p:new Set(),A:0,B:0,C:0};a.h+=x.h;a.n++;a.p.add(x.p);a[x.d]+=x.h;});
+const rec=byArea['Recrutamento e seleção'];const inv=(byArea['E-mail e pedidos internos'].h+byArea['Reuniões e coordenação'].h);
+const top1=T.slice().sort((a,b)=>b.h-a.h)[0];
+[[ 'O recrutamento domina',`${fmt(rec.h)} h por semana (${Math.round(rec.h/tot*100)}% do total), em ${rec.p.size} de ${people} pessoas. Triagem de CVs e marcação de entrevistas repetem-se em quase todas as auditorias.`],
+ ['O trabalho invisível pesa',`E-mail, pedidos internos e reuniões somam ${fmt(inv)} h por semana (${Math.round(inv/tot*100)}%). Não é um "processo de RH", mas é onde o tempo vai.`],
+ ['A mesma tarefa, decisões diferentes','"Marcar entrevistas" foi classificada como A por uns e B por outros; "Entrevistas" como C por quase todos, mas B por uma pessoa. O critério importa tanto como a ferramenta.'],
+ ['Pouca coisa ficou só humana',`Apenas ${Math.round(hC/tot*100)}% das horas foram classificadas como C. A tarefa individual com mais horas: "${top1.t}" (${fmt(top1.h)} h).`]
+].forEach(i=>{const d=el('div','in');d.appendChild(el('b',null,i[0]));d.appendChild(el('p',null,i[1]));$('ins').appendChild(d);});
+// legenda
+['A','B','C'].forEach(k=>{const b=el('button');b.type='button';b.setAttribute('aria-pressed','true');const s=el('span','sw');s.style.background=`var(--c${k})`;b.appendChild(s);b.appendChild(document.createTextNode(k+' · '+L[k]));b.onclick=()=>{on[k]=!on[k];if(!on.A&&!on.B&&!on.C)on[k]=true;b.setAttribute('aria-pressed',String(on[k]));render();};$('legend').appendChild(b);});
+function render(){
+  const rows=Object.entries(byArea).map(([k,v])=>[k,v,(on.A?v.A:0)+(on.B?v.B:0)+(on.C?v.C:0)]).sort((a,b)=>b[2]-a[2]);
+  const max=Math.max(...rows.map(r=>r[2]))||1;$('bars').textContent='';
+  rows.forEach(([k,v,s])=>{const b=el('button','bar');b.type='button';b.setAttribute('aria-pressed',String(area===k));b.appendChild(el('span',null,k));
+    const tr=el('div','track');tr.style.width=(s/max*100)+'%';tr.style.minWidth=s?'4px':'0';['A','B','C'].forEach(d=>{if(!on[d]||!v[d])return;const i=el('i');i.style.width=(v[d]/s*100)+'%';i.style.background=`var(--c${d})`;i.title=`${L[d]}: ${fmt(v[d])} h`;tr.appendChild(i);});
+    const w=el('div');w.appendChild(tr);b.appendChild(w);const vv=el('span','v',fmt(s)+' h');vv.appendChild(el('small',null,v.n+(v.n===1?' tarefa':' tarefas')));b.appendChild(vv);
+    b.onclick=()=>{area=area===k?null:k;render();};$('bars').appendChild(b);});
+  // lista
+  const list=T.filter(x=>on[x.d]&&(!area||x.a===area)).sort((a,b)=>b.h-a.h).slice(0,area?50:12);
+  $('listTitle').textContent=area?('Tarefas · '+area):'As tarefas com mais horas';
+  $('filt').textContent='';if(area){$('filt').appendChild(document.createTextNode('Filtrado pela área escolhida no gráfico. '));const c=el('button',null,'Ver todas');c.onclick=()=>{area=null;render();};$('filt').appendChild(c);}else $('filt').textContent='Cliquem numa área do gráfico para ver as tarefas dela.';
+  const t=$('top');t.textContent='';const hr=el('tr');['Tarefa','Área','h/sem.','Decisão'].forEach(x=>hr.appendChild(el('th',null,x)));t.appendChild(hr);
+  list.forEach(x=>{const r=el('tr');r.appendChild(el('td',null,x.t));r.appendChild(el('td',null,x.a));r.appendChild(el('td','h',fmt(x.h)));const td=el('td');td.appendChild(el('span','pill p'+x.d,x.d));r.appendChild(td);t.appendChild(r);});
+}
+// mesma tarefa
+const G=[['Marcar ou agendar entrevistas',/marcar entrevistas|agendar entrevistas/i],['Triagem e análise de candidaturas',/triagem|screening|cvs|candidat/i],['Entrevistas',/^entrevistas$|realização de entrevistas|condução de entrevistas/i],['Formação',/formação|turmas|convocatórias/i],['Relatórios e KPIs',/relat|kpi|reports/i]];
+const st=$('same');const h=el('tr');['Tarefa','Registos','A','B','C'].forEach(x=>h.appendChild(el('th',null,x)));st.appendChild(h);
+G.forEach(([n,re])=>{const m=T.filter(x=>re.test(x.t));if(m.length<2)return;const r=el('tr');r.appendChild(el('td',null,n));r.appendChild(el('td','h',String(m.length)));['A','B','C'].forEach(d=>{const c=m.filter(x=>x.d===d).length;const td=el('td','h');if(c){td.appendChild(el('span','pill p'+d,String(c)));}else td.textContent='·';r.appendChild(td);});st.appendChild(r);});
+render();
+</script>
+</body>
+</html>
