@@ -3,393 +3,530 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard: IA &amp; Transformacao Digital</title>
+  <title>Dashboard: IA & Transformação Digital</title>
   <style>
     :root {
       --bg: #0f1117;
-      --surface: #1a1d2e;
+      --surface: #1a1d27;
       --card: #22263a;
-      --border: #2e3350;
-      --accent: #6c63ff;
-      --accent2: #00d4aa;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --link: #7dd3fc;
-      --tag-bg: #2d3748;
-      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --border: #2e3450;
+      --accent: #4f8ef7;
+      --accent2: #7c6af7;
+      --text: #e8eaf0;
+      --muted: #8b90a8;
+      --success: #34d399;
+      --warning: #f59e0b;
+      --portugal: #e63946;
+      --europe: #3a86ff;
+      --usa: #8338ec;
+      --china: #ff006e;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
       min-height: 100vh;
-      padding-bottom: 2rem;
     }
-    header {
-      background: linear-gradient(135deg, #1a1d2e 0%, #12141f 100%);
+
+    .header {
+      background: linear-gradient(135deg, #0f1117 0%, #1a1d27 50%, #0d1b3e 100%);
       border-bottom: 1px solid var(--border);
       padding: 2rem 1rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    header h1 {
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(79, 142, 247, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .header h1 {
       font-size: clamp(1.4rem, 4vw, 2.2rem);
       font-weight: 700;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background: linear-gradient(135deg, #4f8ef7, #7c6af7);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      position: relative;
     }
-    .update-time {
-      margin-top: 0.5rem;
+
+    .header .subtitle {
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
-    .pulse {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: var(--accent2);
-      border-radius: 50%;
-      margin-right: 6px;
+
+    .header .update-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(52, 211, 153, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: var(--success);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      margin-top: 0.75rem;
+    }
+
+    .update-badge::before {
+      content: '●';
       animation: pulse 2s infinite;
-      vertical-align: middle;
     }
+
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
-    main {
+
+    .container {
       max-width: 1400px;
-      margin: 2rem auto;
-      padding: 0 1rem;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .regions-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.5rem;
     }
+
     .region-section {
       background: var(--surface);
-      border: 1px solid var(--border);
       border-radius: 16px;
+      border: 1px solid var(--border);
       overflow: hidden;
-      box-shadow: var(--shadow);
     }
+
     .region-header {
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
       border-bottom: 1px solid var(--border);
-      background: rgba(108, 99, 255, 0.05);
     }
-    .region-flag { font-size: 2rem; line-height: 1; }
-    .region-title {
-      font-size: 1.1rem;
+
+    .region-flag {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .region-name {
+      font-size: 1.05rem;
       font-weight: 700;
-      color: var(--text);
+      letter-spacing: 0.02em;
     }
-    .news-count {
+
+    .region-count {
       margin-left: auto;
-      background: var(--tag-bg);
+      background: rgba(255,255,255,0.08);
       color: var(--muted);
+      border-radius: 100px;
+      padding: 0.15rem 0.6rem;
       font-size: 0.75rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
-      font-weight: 500;
     }
+
+    .region-portugal .region-header { border-left: 3px solid var(--portugal); }
+    .region-europe .region-header { border-left: 3px solid var(--europe); }
+    .region-usa .region-header { border-left: 3px solid var(--usa); }
+    .region-china .region-header { border-left: 3px solid var(--china); }
+
     .news-list {
       padding: 0.75rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.6rem;
     }
+
     .news-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-      transition: border-color 0.2s, transform 0.15s;
+      border-radius: 10px;
+      padding: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
     }
+
     .news-card:hover {
       border-color: var(--accent);
       transform: translateY(-1px);
     }
-    .news-card a {
-      color: var(--link);
+
+    .news-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .news-title a {
+      color: var(--text);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
       line-height: 1.4;
       display: block;
-      margin-bottom: 0.5rem;
     }
-    .news-card a:hover { text-decoration: underline; }
+
+    .news-title a:hover {
+      color: var(--accent);
+    }
+
     .news-meta {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       flex-wrap: wrap;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
     }
+
     .news-source {
-      font-size: 0.75rem;
-      color: var(--accent2);
+      color: var(--accent);
+      font-size: 0.72rem;
       font-weight: 600;
-      background: rgba(0, 212, 170, 0.1);
-      padding: 0.2rem 0.5rem;
-      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-    .news-date { font-size: 0.72rem; color: var(--muted); }
-    .news-summary {
-      font-size: 0.85rem;
+
+    .news-date {
       color: var(--muted);
-      line-height: 1.6;
+      font-size: 0.72rem;
     }
-    footer {
+
+    .news-date::before {
+      content: '·';
+      margin-right: 0.5rem;
+    }
+
+    .news-summary {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 1rem;
       text-align: center;
-      padding: 2rem 1rem 1rem;
       color: var(--muted);
       font-size: 0.8rem;
-      border-top: 1px solid var(--border);
-      margin-top: 1rem;
     }
-    footer span { color: var(--accent2); }
+
+    .footer strong {
+      color: var(--text);
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
     @media (max-width: 600px) {
-      main { margin: 1rem auto; gap: 1rem; }
-      .region-header { padding: 1rem; }
-      .news-list { padding: 0.5rem; }
+      .regions-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 1rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Dashboard: IA &amp; Transformacao Digital</h1>
-  <p class="update-time">
-    <span class="pulse"></span>
-    Atualizado em 16 de novembro de 2026, 07:16 UTC
-  </p>
-</header>
+  <header class="header">
+    <h1>Dashboard: IA &amp; Transformação Digital</h1>
+    <p class="subtitle">Notícias das últimas 48 horas • Organizado por região</p>
+    <div class="update-badge">Atualizado a 17 de novembro de 2026</div>
+  </header>
 
-<main>
+  <main class="container">
+    <div class="regions-grid">
 
-  <!-- PORTUGAL -->
-  <section class="region-section">
-    <div class="region-header">
-      <span class="region-flag">&#127477;&#127481;</span>
-      <span class="region-title">Portugal</span>
-      <span class="news-count">5 noticias</span>
+      <!-- PORTUGAL -->
+      <section class="region-section region-portugal">
+        <div class="region-header">
+          <span class="region-flag">🇵🇹</span>
+          <span class="region-name">Portugal</span>
+          <span class="region-count">4 artigos</span>
+        </div>
+        <div class="news-list">
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">ANI</span>
+              <span class="news-date">10 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://ani.pt/inteligencia-artificial-e-inovacao-tecnologica-em-destaque-na-web-summit-2026/" target="_blank" rel="noopener">
+                Inteligência Artificial e Inovação Tecnológica em Destaque na Web Summit 2026
+              </a>
+            </div>
+            <p class="news-summary">A Web Summit 2026, realizada em Lisboa entre 9 e 12 de novembro, colocou a inteligência artificial no centro do debate global sobre tecnologia. Portugal reforçou a sua posição como palco europeu de referência para o ecossistema de startups e inovação digital.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">Devoteam Portugal</span>
+              <span class="news-date">Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.devoteam.com/pt/news-and-pr/portugal-digital-summit-2026-a-era-dos-agentes-de-ia-e-a-construcao-do-ecossistema-financeiro/" target="_blank" rel="noopener">
+                Portugal Digital Summit 2026: A Era dos Agentes de IA e o Ecossistema Financeiro
+              </a>
+            </div>
+            <p class="news-summary">O Portugal Digital Summit 2026 centrou-se no tema "A Era dos Agentes de IA", debatendo o impacto dos agentes inteligentes na construção do ecossistema financeiro nacional e na transformação das organizações portuguesas.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">ia.gov.pt</span>
+              <span class="news-date">Out 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://ia.gov.pt/noticias-e-destaques/arte-destaca-estrategia-digital-nacional-e-agenda-de-inteligencia-artificial-na-smart-country-convention-2026" target="_blank" rel="noopener">
+                Portugal Apresenta Estratégia de IA na Smart Country Convention em Berlim
+              </a>
+            </div>
+            <p class="news-summary">A ARTE representou Portugal na Smart Country Convention 2026 em Berlim, apresentando a visão nacional para a IA na Administração Pública — assente em inovação responsável, soberania tecnológica e transformação dos serviços públicos.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">aiact-portugal.pt</span>
+              <span class="news-date">Jan 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://aiact-portugal.pt/pages/ania-2026-2030.html" target="_blank" rel="noopener">
+                ANIA 2026–2030: Agenda Nacional de Inteligência Artificial aprovada pelo Governo
+              </a>
+            </div>
+            <p class="news-summary">O Governo português aprovou a Agenda Nacional de Inteligência Artificial (ANIA 2026-2030) com 32 iniciativas e investimento mobilizado superior a 400 milhões de euros, integrando a Estratégia Digital Nacional com o objetivo de transformar empresas, trabalhadores e o Estado.</p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- EUROPA -->
+      <section class="region-section region-europe">
+        <div class="region-header">
+          <span class="region-flag">🇪🇺</span>
+          <span class="region-name">Europa</span>
+          <span class="region-count">4 artigos</span>
+        </div>
+        <div class="news-list">
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">CASRAI / Comissão Europeia</span>
+              <span class="news-date">11 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://casrai.org/news/eu-digital-fairness-act-ai-consumer-proposal-2026" target="_blank" rel="noopener">
+                Comissão Europeia Propõe Digital Fairness Act com Proteções ao Consumidor em IA
+              </a>
+            </div>
+            <p class="news-summary">A Comissão Europeia apresentou a 11 de novembro a proposta do Digital Fairness Act, que inclui salvaguardas específicas para agentes de IA em compras e funcionalidades digitais que incentivem o uso compulsivo, seguindo-se debate no Parlamento Europeu e Conselho.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">Yahoo News / Comissão Europeia</span>
+              <span class="news-date">Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.yahoo.com/news/world/articles/european-commission-proposal-wants-rein-150000606.html" target="_blank" rel="noopener">
+                Comissão Europeia Quer Regular Agentes de IA em Nova Proposta Legislativa
+              </a>
+            </div>
+            <p class="news-summary">A Comissão Europeia divulgou uma nova proposta que visa limitar e regulamentar os agentes de IA autónomos, à medida que estes proliferam no mercado europeu, gerando preocupações sobre responsabilidade, transparência e segurança dos utilizadores.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">CASRAI</span>
+              <span class="news-date">Dez 2026 (deadline)</span>
+            </div>
+            <div class="news-title">
+              <a href="https://casrai.org/news/eu-ai-act-2-december-2026-obligations-article-50" target="_blank" rel="noopener">
+                AI Act: Prazo de 2 de Dezembro de 2026 para Conformidade de IA Generativa
+              </a>
+            </div>
+            <p class="news-summary">A partir de 2 de dezembro de 2026, os sistemas de IA generativa já no mercado da UE têm de cumprir o Artigo 50 do AI Act, incluindo obrigações de marcação de conteúdo sintético e proibições de materiais de abuso sexual infantil gerados por IA.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">digital-strategy.ec.europa.eu</span>
+              <span class="news-date">19 Out 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://digital-strategy.ec.europa.eu/en/policies/ai-act-standardisation" target="_blank" rel="noopener">
+                Primeira Norma Harmonizada do AI Act Publicada no Jornal Oficial da UE
+              </a>
+            </div>
+            <p class="news-summary">A Comissão Europeia publicou a primeira norma harmonizada de suporte ao AI Act (EN 18286:2026), focada na gestão da qualidade para fornecedores de IA de alto risco, marcando um passo concreto na implementação técnica do regulamento.</p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- EUA -->
+      <section class="region-section region-usa">
+        <div class="region-header">
+          <span class="region-flag">🇺🇸</span>
+          <span class="region-name">Estados Unidos</span>
+          <span class="region-count">4 artigos</span>
+        </div>
+        <div class="news-list">
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">Bloomberg / The National News</span>
+              <span class="news-date">16 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://bloomberg.com/news/articles/2026-11-16/us-moves-to-limit-remote-access-to-advanced-ai-chips" target="_blank" rel="noopener">
+                EUA Finalizam Regra para Limitar Acesso Remoto a Chips Avançados de IA
+              </a>
+            </div>
+            <p class="news-summary">O Departamento de Comércio dos EUA publicou uma regra que obriga operadores de centros de dados em Singapura, Malásia, Tailândia, Indonésia e Brasil a obterem licença governamental antes de fornecerem chips avançados de IA, numa medida de segurança nacional com impacto global.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">Bloomberg / Financial Times</span>
+              <span class="news-date">15 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://bloomberg.com/news/articles/2026-11-15/us-allies-agree-to-guard-ai-supply-chains-from-china-ft-says" target="_blank" rel="noopener">
+                EUA e Aliados Acordam Proteção Conjunta das Cadeias de Fornecimento de IA contra a China
+              </a>
+            </div>
+            <p class="news-summary">Os Estados Unidos e os seus aliados chegaram a acordo para identificar e proteger conjuntamente tecnologias e infraestruturas de IA consideradas vulneráveis à influência da China, segundo o Financial Times, com vários países já signatários do acordo.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">The Neuron AI</span>
+              <span class="news-date">17 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-tuesday-november-17-2026/" target="_blank" rel="noopener">
+                Anthropic Anuncia IPO e Diz Ter Atingido Limiar de Aceleração de Investigação por IA
+              </a>
+            </div>
+            <p class="news-summary">A Anthropic comunicou aos investidores que atingiu o seu próprio limiar interno de aceleração de investigação via IA, numa fase de preparação para abertura de capital. Em paralelo, a OpenAI lançou a ChatGPT Wallet para pagamentos em agentes de IA autónomos.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">InsideAIPolicy / OriginBrief</span>
+              <span class="news-date">9 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.originbrief.app/en/reports/ai-regulation-policy/2026-11-09/weekly" target="_blank" rel="noopener">
+                Democratas Vencem Eleições Intercalares com Agenda de Regulação da IA
+              </a>
+            </div>
+            <p class="news-summary">Segundo relatórios de política, os democratas venceram o controlo de ambas as câmaras do Congresso a 3 de novembro de 2026, tendo a regulação de IA, moratórias sobre centros de dados e o controlo das grandes tecnológicas sido temas centrais das suas campanhas.</p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- CHINA -->
+      <section class="region-section region-china">
+        <div class="region-header">
+          <span class="region-flag">🇨🇳</span>
+          <span class="region-name">China</span>
+          <span class="region-count">4 artigos</span>
+        </div>
+        <div class="news-list">
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">tech-insider.org</span>
+              <span class="news-date">Out/Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://tech-insider.org/china-ai-export-curbs-23-technologies-2026/" target="_blank" rel="noopener">
+                China Propõe Controlo de Exportação sobre 23 Tecnologias de IA de Ponta
+              </a>
+            </div>
+            <p class="news-summary">Os ministérios do Comércio e da Ciência e Tecnologia da China propuseram regras que proíbem a exportação de modelos de fronteira de IA de fonte fechada, permitindo contudo o acesso via API, aplicações e serviços cloud. O período de consulta pública terminou a 15 de novembro.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">Taipei Times</span>
+              <span class="news-date">4 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.taipeitimes.com/News/world/archives/2026/11/04/2003867143" target="_blank" rel="noopener">
+                China Planeia Medidas de Segurança Abrangentes para IA após Falhas Globais
+              </a>
+            </div>
+            <p class="news-summary">Pequim anunciou planos para introduzir um conjunto alargado de normas de segurança que abrangem o ciclo de vida completo da IA, do desenvolvimento à implantação. A Administração do Ciberespaço da China lançou igualmente uma plataforma unificada para registo de novas tecnologias a 9 de novembro.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">South China Morning Post</span>
+              <span class="news-date">Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.scmp.com/tech" target="_blank" rel="noopener">
+                Moonshot AI Coloca Modelos Kimi na Corrida por Descobertas Científicas
+              </a>
+            </div>
+            <p class="news-summary">A startup chinesa Moonshot AI integrou os seus modelos Kimi em fluxos de investigação científica, posicionando-se na vanguarda da aplicação de IA à ciência. Em simultâneo, a Baidu reportou que os ganhos em IA não foram suficientes para compensar uma queda de 46% nos lucros por fraca publicidade.</p>
+          </article>
+
+          <article class="news-card">
+            <div class="news-meta">
+              <span class="news-source">USCC / Note.com</span>
+              <span class="news-date">10 Nov 2026</span>
+            </div>
+            <div class="news-title">
+              <a href="https://www.uscc.gov/trade-bulletins/china-bulletin-november-10-2026" target="_blank" rel="noopener">
+                Modelos Chineses Representam 89% dos Gastos Empresariais em IA Open-Source
+              </a>
+            </div>
+            <p class="news-summary">Um inquérito citado pela Comissão EUA-China revela que os modelos de IA de empresas chinesas representam 89% dos gastos empresariais globais em modelos de IA de fonte aberta, refletindo a crescente competitividade do ecossistema de IA da China a nível mundial.</p>
+          </article>
+
+        </div>
+      </section>
+
     </div>
-    <div class="news-list">
+  </main>
 
-      <div class="news-card">
-        <a href="https://ani.pt/inteligencia-artificial-e-inovacao-tecnologica-em-destaque-na-web-summit-2026/" target="_blank" rel="noopener">IA e Inovacao em Destaque na Web Summit 2026 em Lisboa</a>
-        <div class="news-meta">
-          <span class="news-source">ANI</span>
-          <span class="news-date">10 nov 2026</span>
-        </div>
-        <p class="news-summary">A ANI participou na Web Summit em Lisboa com sessoes sobre Fabricas de IA e zonas livres tecnologicas, incluindo a sessao "AI Factories: Turning European Ambition into Startup Impact" a 10 de novembro.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://aiact-portugal.pt/pages/ania-2026-2030.html" target="_blank" rel="noopener">Agenda Nacional de Inteligencia Artificial (ANIA 2026-2030) em vigor</a>
-        <div class="news-meta">
-          <span class="news-source">digital.gov.pt</span>
-          <span class="news-date">jan 2026</span>
-        </div>
-        <p class="news-summary">O Governo aprovou a Agenda Nacional de IA com investimento superior a 400 milhoes de euros, 32 iniciativas e 25 milhoes especificos para a Administracao Publica, envolvendo universidades, empresas e centros de investigacao.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://www.devoteam.com/pt/news-and-pr/portugal-digital-summit-2026-a-era-dos-agentes-de-ia-e-a-construcao-do-ecossistema-financeiro/" target="_blank" rel="noopener">Portugal Digital Summit 2026: A Era dos Agentes de IA</a>
-        <div class="news-meta">
-          <span class="news-source">Devoteam</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">O Portugal Digital Summit destacou "A Era dos Agentes de IA", alertando que a adocao de IA nao pode ficar limitada aos departamentos de TI e deve envolver toda a organizacao, especialmente no setor financeiro.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://cbpce.org.br/portugal-e-mocambique-ampliam-cooperacao-parlamentar-com-foco-em-inteligencia-artificial/" target="_blank" rel="noopener">Portugal e Mocambique ampliam cooperacao parlamentar em IA</a>
-        <div class="news-meta">
-          <span class="news-source">CBPCE</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">Portugal e Mocambique assinaram protocolo parlamentar focado em inteligencia artificial, transformacao digital, modernizacao legislativa e preservacao de arquivos digitais no espaco lusoFONO.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://www.forbespt.com/portugal-provou-que-consegue-adotar-a-ia-o-maior-desafio-ainda-esta-pela-frente/" target="_blank" rel="noopener">Mais de metade das empresas portuguesas usa IA</a>
-        <div class="news-meta">
-          <span class="news-source">Forbes Portugal</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">Estudo da Strand Partners para a AWS revela que mais de 50% das empresas portuguesas utilizam atualmente IA, face a 41% ha um ano, sinalizando aceleracao na adocao empresarial em Portugal.</p>
-      </div>
-
+  <footer class="footer">
+    <p>Atualizado automaticamente por <strong>Claude</strong> &nbsp;·&nbsp; 17 de novembro de 2026</p>
+    <div class="footer-logo">
+      <span>🤖</span>
+      <span>Gerado por Claude Agent &nbsp;·&nbsp; Fontes: ANI, Comissão Europeia, Bloomberg, SCMP, Taipei Times, USCC</span>
     </div>
-  </section>
-
-  <!-- EUROPA -->
-  <section class="region-section">
-    <div class="region-header">
-      <span class="region-flag">&#127466;&#127482;</span>
-      <span class="region-title">Europa</span>
-      <span class="news-count">4 noticias</span>
-    </div>
-    <div class="news-list">
-
-      <div class="news-card">
-        <a href="https://softtechhub.us/2026/11/10/eu-ai-act-high-risk-delay-2027/" target="_blank" rel="noopener">AI Act: Regras para IA de Alto Risco Adiadas para Dezembro de 2027</a>
-        <div class="news-meta">
-          <span class="news-source">SoftTechHub</span>
-          <span class="news-date">10 nov 2026</span>
-        </div>
-        <p class="news-summary">O "AI Omnibus" entrou em vigor a 27 de julho de 2026 e adiou as regras para sistemas de alto risco: sistemas autonomos para dezembro de 2027 e IA em produtos regulamentados para agosto de 2028.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">Comissao Europeia lanca AI Toolbox para Administracoes Publicas</a>
-        <div class="news-meta">
-          <span class="news-source">Comissao Europeia</span>
-          <span class="news-date">5 nov 2026</span>
-        </div>
-        <p class="news-summary">A Comissao lancou a 5 de novembro de 2026 um conjunto de ferramentas de IA para apoiar as administracoes publicas europeias na adocao segura e etica da inteligencia artificial nos seus servicos.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://digital-strategy.ec.europa.eu/en/policies/ai-act-standardisation" target="_blank" rel="noopener">Primeira norma harmonizada do AI Act publicada no Jornal Oficial da UE</a>
-        <div class="news-meta">
-          <span class="news-source">Comissao Europeia</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">A norma prEN 18286 sobre gestao da qualidade em IA foi publicada como Decisao de Execucao (UE) 2026/2274, sendo a primeira norma harmonizada do AI Act com reconhecimento oficial na Uniao Europeia.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://futureagi.com/blog/eu-ai-act-timeline-digital-omnibus-2027/" target="_blank" rel="noopener">AI Act em vigor: Proibicoes e modelos de IA geral ja aplicados desde agosto 2026</a>
-        <div class="news-meta">
-          <span class="news-source">FutureAGI</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">Desde agosto de 2026, o AI Office da UE tem poderes de fiscalizacao sobre modelos de IA de uso geral, podendo solicitar documentacao, avaliar modelos e emitir coimas. Os deveres de transparencia (Artigo 50) tambem ja estao em vigor.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- EUA -->
-  <section class="region-section">
-    <div class="region-header">
-      <span class="region-flag">&#127482;&#127480;</span>
-      <span class="region-title">EUA</span>
-      <span class="news-count">5 noticias</span>
-    </div>
-    <div class="news-list">
-
-      <div class="news-card">
-        <a href="https://learnrudi.com/insights/rudi-daily-ai-news-2026-11-14.html" target="_blank" rel="noopener">Anthropic prepara IPO em novembro de 2026 com avaliacao de 26 mil milhoes</a>
-        <div class="news-meta">
-          <span class="news-source">LearnRudi</span>
-          <span class="news-date">14 nov 2026</span>
-        </div>
-        <p class="news-summary">A Anthropic deverา precificar as suas acoes a 18 de novembro e comecar a negociar no Nasdaq (ticker: ANT) a 19 de novembro, com a Nvidia a comprometer 10 mil milhoes de dolares numa colocacao privada de 26 mil milhoes.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://learnrudi.com/insights/rudi-daily-ai-news-2026-11-14.html" target="_blank" rel="noopener">OpenAI lanca ChatGPT Wallet para pagamentos de agentes de IA</a>
-        <div class="news-meta">
-          <span class="news-source">LearnRudi</span>
-          <span class="news-date">14 nov 2026</span>
-        </div>
-        <p class="news-summary">A OpenAI lancou o ChatGPT Wallet, que permite a agentes de IA realizarem pagamentos atraves de redes de cartao. A empresa tambem abriu uma beta que permite a empresas reclamarem perfis no ChatGPT.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://axios.com/2026/11/14/ai-trust-nvidia-tech-stocks" target="_blank" rel="noopener">IA enfrenta crise de confianca quadrupla apos vitoria dos Democratas</a>
-        <div class="news-meta">
-          <span class="news-source">Axios</span>
-          <span class="news-date">14 nov 2026</span>
-        </div>
-        <p class="news-summary">A Nvidia caiu 13% esta semana apos mudanca de lideranca da empresa, enquanto os Democratas planejam uma onda de projetos de lei sobre IA apos tomarem o controlo do Congresso em janeiro, criando uma crise de confianca em quatro frentes: seguranca, politica, financas e lideranca.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://www.bloomberg.com/news/articles/2026-11-05/ai-companies-brace-for-new-challenges-after-democrats-win" target="_blank" rel="noopener">Empresas de IA preparam-se para novos desafios apos vitoria democratica</a>
-        <div class="news-meta">
-          <span class="news-source">Bloomberg</span>
-          <span class="news-date">5 nov 2026</span>
-        </div>
-        <p class="news-summary">Apos a vitoria dos Democratas nas eleicoes intercalares, as empresas de IA preparam-se para maior escrutinio congressional, possiveis restricoes estaduais a centros de dados e novas exigencias de transparencia e seguranca.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-monday-november-16-2026/" target="_blank" rel="noopener">FBI e Amazon documentam agentes de IA a executar ataques ciberneticos</a>
-        <div class="news-meta">
-          <span class="news-source">The Neuron</span>
-          <span class="news-date">16 nov 2026</span>
-        </div>
-        <p class="news-summary">O FBI e a Amazon documentaram casos de agentes de IA a conduzir ataques ciberneticos autonomos. Separadamente, grupos de defesa pediram a um tribunal para suspender o desenvolvimento de IA de fronteira.</p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CHINA -->
-  <section class="region-section">
-    <div class="region-header">
-      <span class="region-flag">&#127464;&#127475;</span>
-      <span class="region-title">China</span>
-      <span class="news-count">4 noticias</span>
-    </div>
-    <div class="news-list">
-
-      <div class="news-card">
-        <a href="https://www.scmp.com/news/china-future-tech/ai" target="_blank" rel="noopener">DeepSeek expande agentes de IA com 1,5 milhoes de utilizadores diarios</a>
-        <div class="news-meta">
-          <span class="news-source">South China Morning Post</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">A DeepSeek acelera a sua oferta de agentes de IA com um "super agente" focado em programacao, ultrapassando 1,5 milhoes de utilizadores diarios e consolidando-se como lider do mercado de codigo aberto na China.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://techxplore.com/news/2026-11-china-touts-tech-ai-cred.html" target="_blank" rel="noopener">China exibe robots e modelos de IA de baixo custo na Web Summit em Lisboa</a>
-        <div class="news-meta">
-          <span class="news-source">TechXplore / AFP</span>
-          <span class="news-date">11 nov 2026</span>
-        </div>
-        <p class="news-summary">A China marcou presenca de destaque na Web Summit de Lisboa, apresentando robots dancantes e modelos de IA economicos a mais de 70.000 participantes de 164 paises, enquanto Pequim nega alegacoes de espionagem ligadas a Nvidia.</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://www.bloomberg.com/news/features/2026-11-12/how-china-is-creating-a-new-generation-of-ai-entrepreneurs" target="_blank" rel="noopener">China cria nova geracao de empreendedores de IA em massa</a>
-        <div class="news-meta">
-          <span class="news-source">Bloomberg</span>
-          <span class="news-date">12 nov 2026</span>
-        </div>
-        <p class="news-summary">O governo chines incentiva ativamente a criacao de empresas de IA individuais, com competicao feroz por apoio estatal. A Bloomberg descreve um ecossistema de "fabrica em massa de empresas de IA com uma unica pessoa".</p>
-      </div>
-
-      <div class="news-card">
-        <a href="https://note.com/sugerpowder/n/na9c8cccdb2b8?hl=en" target="_blank" rel="noopener">China acelera legislacao de IA e prioriza chips domesticos para inferencia</a>
-        <div class="news-meta">
-          <span class="news-source">Note.com (Resumo Semanal)</span>
-          <span class="news-date">nov 2026</span>
-        </div>
-        <p class="news-summary">A Comissao Nacional de Desenvolvimento e Reforma da China anunciou aceleracao da legislacao abrangente de IA e normas de seguranca, enquanto analistas estimam que 1,5 milhoes de GPUs Nvidia proibidas ja chegaram a China apesar dos controlos de exportacao.</p>
-      </div>
-
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <p><span>Atualizado automaticamente por Claude</span> &mdash; Dados recolhidos em 16 de novembro de 2026</p>
-  <p style="margin-top:0.5rem;font-size:0.72rem;">As noticias apresentadas baseiam-se em pesquisas automatizadas. Verifique as fontes originais para confirmacao.</p>
-</footer>
+  </footer>
 
 </body>
 </html>
